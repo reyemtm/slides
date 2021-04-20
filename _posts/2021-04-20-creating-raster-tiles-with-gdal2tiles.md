@@ -1,6 +1,7 @@
 ---
 title: Test
 subtitle: Test
+layout: post
 ---
 # h1
 
