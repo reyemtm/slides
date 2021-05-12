@@ -1,0 +1,211 @@
+---
+layout: false
+---
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <meta charset='utf-8' />
+    <title>2017 Ohio GIS Style | Mapbox</title>
+
+    <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
+    <!--script src='/apps-plugins/mapbox-gl-inspect/mapbox-gl-inspect.min.js'></script>
+    <link href='/apps-plugins/mapbox-gl-inspect/mapbox-gl-inspect.css' rel='stylesheet' /-->
+
+    <meta name='twitter:site' content='@mapbox'>
+    <meta property='og:site_name' content='Mapbox' />
+    <meta name='twitter:url' content='https://api.mapbox.com/styles/v1/Malcolm Meyer/cj7hmtqpj4qpg2rmmporqa4xm.html?access_token=pk.eyJ1IjoicmV5ZW10bSIsImEiOiJCTHUxSVZ3In0.Q-qbg_jG0JcT6bfBeiwXQg' />
+    <meta property='og:url' content='https://api.mapbox.com/styles/v1/Malcolm Meyer/cj7hmtqpj4qpg2rmmporqa4xm.html?access_token=pk.eyJ1IjoicmV5ZW10bSIsImEiOiJCTHUxSVZ3In0.Q-qbg_jG0JcT6bfBeiwXQg'>
+    <meta name='twitter:title' content='2017 Ohio GIS Style' />
+    <meta property='og:title' content='2017 Ohio GIS Style' />
+    <meta name='twitter:description' content='A map made by Malcolm Meyer' />
+    <meta property='og:description' content='A map made by Malcolm Meyer' />
+        <meta name='twitter:image' content='https://api.mapbox.com/styles/v1/Malcolm Meyer/cj7hmtqpj4qpg2rmmporqa4xm/static/-93.24662975649983,44.96977500241482,13.333061634754618/435x375?access_token=pk.eyJ1IjoicmV5ZW10bSIsImEiOiJCTHUxSVZ3In0.Q-qbg_jG0JcT6bfBeiwXQg' />
+        <meta property='og:image' content='https://api.mapbox.com/styles/v1/Malcolm Meyer/cj7hmtqpj4qpg2rmmporqa4xm/static/-93.24662975649983,44.96977500241482,13.333061634754618/435x375?access_token=pk.eyJ1IjoicmV5ZW10bSIsImEiOiJCTHUxSVZ3In0.Q-qbg_jG0JcT6bfBeiwXQg' />
+    <meta name='twitter:image:width' content='435'>
+    <meta name='twitter:image:height' content='375'>
+    <meta property='og:image:width' content='435'>
+    <meta property='og:image:height' content='375'>
+    <meta name='twitter:card' content='summary_large_image'>
+    <meta property='og:type' content='website' />
+
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .mapboxgl-popup-content {
+          font-size: large;
+          padding: 10px;
+        }
+        .mapboxgl-popup-close-button {
+          font-size: xx-large;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+        }
+        .shadow {
+            box-shadow: 0 0 25px 0 rgba(0,0,0,0.15);
+        }
+        .round-bottomleft {
+            border-bottom-left-radius: 3px;
+        }
+        .mapboxgl-ctrl-nav > a {
+            border-color: rgba(0,0,0,.1);
+        }
+        @media only screen and (max-width:640px) {
+            .leaflet-left .leaflet-control,
+            .mapboxgl-ctrl-top-left .mapboxgl-ctrl {
+                margin-top: 70px;
+            }
+            .round-bottomleft {
+                border-bottom-left-radius: 0;
+            }
+            .mobile-fullwidth {
+                width: 100%;
+                height: 60px;
+                overflow: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+    <div class='mobile-fullwidth z10 pin-topright round-bottomleft fcol9 shadow fill-white'>
+        <a href='https://www.mapbox.com' class='fill-light pad2x pin-right'>
+            <div class='icon big mapbox quiet space-top2'></div>
+        </a>
+        <div class='space-right8 pad2y space-left2'>
+            <h3>2017 Ohio GIS Style</h3>
+            <div class='clearfix small'>Malcolm Meyer</div>
+        </div>
+    </div>
+    <script>
+    (function() {
+        'use strict';
+
+        if ( mapboxgl.supported() ) {
+            renderMapboxGL();
+        } else {
+            renderMapboxJS();
+        }
+
+        function renderMapboxGL(options) {
+            mapboxgl.accessToken = 'pk.eyJ1IjoicmV5ZW10bSIsImEiOiJCTHUxSVZ3In0.Q-qbg_jG0JcT6bfBeiwXQg';
+            mapboxgl.config.API_URL = 'https://api.mapbox.com';
+
+            window.map = new mapboxgl.Map({
+                container: 'map',
+                style: "mapbox://styles/reyemtm/cj4zs9otk0zpz2rnt5zakz4fz",
+                hash: true,
+                scrollZoom: true
+            }).addControl(new mapboxgl.NavigationControl(), 'top-left');
+            /*map.addControl(new MapboxInspect({
+              showMapPopup: true,
+              showMapPopupOnHover: false,
+              showInspectMapPopupOnHover: false,
+              showInspectButton: true
+            }));*/
+            map.on('click', function(e) {
+              console.log(e)
+
+              var features = map.queryRenderedFeatures(e.point);
+
+              if (features.length) {
+                var popup = new mapboxgl.Popup()
+                  .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                  .setHTML('<pre style="font-size:larger;">' + JSON.stringify((features[0].properties), null, 2) + '</pre>')
+                  .addTo(map);
+                var feature = features[0];
+                console.log(feature);
+                if (feature.layer.type == "line") {
+                  var layer = feature.layer.id;
+                  map.setPaintProperty(layer, "line-color", "#00FF0D");
+                }
+              }
+            });
+        }
+
+        function renderMapboxJS() {
+            L.mapbox.accessToken = 'pk.eyJ1IjoicmV5ZW10bSIsImEiOiJCTHUxSVZ3In0.Q-qbg_jG0JcT6bfBeiwXQg';
+            L.mapbox.config.HTTPS_URL = 'https://api.mapbox.com';
+            L.mapbox.config.FORCE_HTTPS = true;
+
+            window.map = L.mapbox.map('map', '', {
+                scrollWheelZoom: true,
+                minZoom: 1
+            });
+
+            L.mapbox.styleLayer('mapbox://styles/Malcolm Meyer/cj7hmtqpj4qpg2rmmporqa4xm').addTo(map);
+
+            if (window.location.hash) {
+                window.location.hash = window.location.hash
+                  .substring(1).split('/').slice(0, 3).join('/');
+            } else {
+                    map.setView([44.96977500241482, -93.24662975649983],  Math.round(13.333061634754618 + 1));
+            }
+
+            var hash = new L.hash(map);
+
+            hash.parseHash = function(hash) {
+                if (hash.indexOf('#') === 0) {
+                    hash = hash.substr(1);
+                }
+                var args = hash.split('/');
+                if (args.length == 3) {
+                    var zoom = parseInt(args[0], 10) + 1, // Account for zoomOffset
+                    lat = parseFloat(args[1]),
+                    lon = parseFloat(args[2]);
+                    if (isNaN(zoom) || isNaN(lat) || isNaN(lon)) {
+                        return false;
+                    } else {
+                        return {
+                            center: new L.LatLng(lat, lon),
+                            zoom: zoom
+                        };
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            hash.formatHash = function(map) {
+                var center = map.getCenter(),
+                    zoom = map.getZoom() - 1,  // Account for zoomOffset
+                    precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
+
+                return '#' + [zoom,
+                    center.lat.toFixed(precision),
+                    center.lng.toFixed(precision)
+                ].join('/');
+            }
+
+        }
+
+
+        // Show app store banner in mobile Safari
+        var meta = document.createElement('meta');
+        meta.name = 'apple-itunes-app';
+        meta.content = 'app-id=1208400007, app-argument=' + document.location.href;
+        document.head.appendChild(meta);
+
+    })();
+
+
+
+    </script>
+
+</body>
+
+</html>

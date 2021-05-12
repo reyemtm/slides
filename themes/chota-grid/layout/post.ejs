@@ -1,0 +1,61 @@
+<main class="container">
+<div class="post grid">
+  <section>
+    <artcile>
+      <header>
+        <h1><%- page.title %></h1>
+        <!-- <h3 style="margin-bottom: 3rem" class="alt-color"><%- page.subtitle %></h3> -->
+
+        <h2><%- page.subtitle %></h2>
+
+        <span>
+          <% if (page.date_updated) {%>
+            Posted&nbsp;<time datetime="<%= date_xml(page.date) %>" itemprop="datePublished"><%= date(page.date) %></time>&nbsp;| Updated&nbsp;<time datetime="<%= date_xml(page.date_updated) %>" itemprop="dateUpdated"><%= date(page.date_updated) %></time>
+            <%}else{%>
+            Posted&nbsp;<time datetime="<%= date_xml(page.date) %>" itemprop="datePublished"><%= date(page.date) %></time>
+          <%}%>
+        </span>
+        <span>
+          <%- list_tags(page.tags, {
+            show_count: false,
+            class: 'clean tag'
+          }) %>
+        </span>
+
+        <% if (page.slides || page.iframe) { %>
+          <% if (page.slides) { %>
+            <% var iframe = (page.slides) %>
+            <%}else{%>
+            <% var iframe = (page.iframe) %>
+          <%}%>
+          <div style="margin-bottom: 20px;">
+            <iframe src="<%= iframe %>" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" height="700" frameborder="0"></iframe>
+            <em style="font-size: smaller;"><a href="<%= iframe %>" target="_blank">View this presentation fullscreen in a new tab.</a></em>
+          </div>
+          <%}else{%>
+          <img src="/assets/img/16x9_<% if (page.img) {%><%- page.img %><%} else {%><%- config.defaultimage %><%}%>">
+        <%}%>
+
+      </header>
+      <%- page.content %>
+    </artcile>
+  </section>
+</div>
+</main>
+<section class="bg-lighter">
+<div class="container grid grid-7x-3x">
+  <%- list_related_posts({
+    maxCount: 2, 
+    orderBy: 'random', 
+    pClass: 'post-realted-p',
+    ulClass: 'post-related-ul',
+    liClass: 'post-related-li',
+    aClass: 'post-related-a',
+    generateAbstract: true,
+    abstractClass: 'post-related-abstract',
+    abstractLength: 200
+    }) %>
+    
+  <%- partial('_partial/sidebar') %>
+</div>
+</section>

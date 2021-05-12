@@ -1,0 +1,251 @@
+---
+layout: slides
+theme: white
+title: "Data-Driven Styling, 3D Polygons & Vector Tiles with Mapbox GL JS"
+style: >-
+  * { text-shadow: none;}
+  .reveal.center {
+    min-height: calc(100vh - 600px)!important;
+  }
+  .reveal h1 {
+    font-size: 2.8em!important;
+  }
+  .reveal h2 {
+    font-size: 1.8em!important;
+  }
+  .reveal em {
+    color: firebrick!important;
+  }
+  .fa-fw {
+    line-height: 43px!important;
+  }
+  @font-face {
+    font-family: 'Cabin';
+    font-style: normal;
+    font-weight: 400;
+    src:
+      url('/apps-plugins/big-assets/fonts/Cabin-Regular.woff') format('woff'),
+      url('/apps-plugins/big-assets/fonts/Cabin-Regular.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src:
+      url('/apps-plugins/big-assets/fonts/Montserrat-Regular.woff') format('woff'),
+      url('/apps-plugins/big-assets/fonts/Montserrat-Regular.woff2') format('woff2');
+  }
+  .reveal h1, .reveal h2 {
+    font-family: "Montserrat"!important;
+    color: firebrick!important
+  }
+  # body, p, h3, h4, h5, h6 {
+  #   font-family: 'Cabin', sans-serif;
+  # }
+  .reveal br  {
+    content: ' '
+  }
+  .reveal br:after {
+    content: ' '
+  }
+transition: fade
+img: "2017-mapbox-ohio-gis@2x.jpg"
+---
+<section>  <img src="/slides/2017-mapbox-ohio-gis/img/title-page.jpg" />
+</section>
+<section>   <h2 id="-ovrdc-http-www-ovrdc-org-"><a href="http://www.ovrdc.org">OVRDC</a></h2>
+  <p>www.ovrdc.org</p>
+  <h2 id="-ovrdc-web-map-examples-https-ovrdc-github-io-gis-tutorials-"><a href="https://ovrdc.github.io/gis-tutorials/">Map Examples</a></h2>
+  <p>ovrdc.github.io/gis-tutorials</p>
+  <h2 id="-this-presentation-https-getbounds-com-slides-2017-mapbox-ohio-gis-"><a href="https://getbounds.com/slides/2017-mapbox-ohio-gis">This Presentation</a></h2>
+  <p>www.ovrdc.org/gis/presentations</p>
+</section>
+<section>
+  <h1 id="what">What</h1>
+  <h1 id="why">Why</h1>
+  <h1 id="how">How</h1>
+</section>
+<section>
+  <h1 id="what">What</h1>
+  <h1 id="are-vector-tiles-https-www-mapbox-com-vector-tiles-specification-">Are <a href="https://www.mapbox.com/vector-tiles/specification/">Vector Tiles</a>?</h1>
+</section>
+<section>
+  <p style="font-size:48px;">Vector Tiles are a <em>representation (serialized data)</em> of geographic features and their underlying data for a <em>specific zoom level</em> and bounding box. Lines and polygons may be <em>simplified</em> and points may be omitted. ~ <em>Adapted from <a href="https://en.wikipedia.org/wiki/Vector_tiles">Wikipedia</a> & <a href="https://www.mapbox.com/vector-tiles/specification/">Mapbox</a></em></p>
+</section>
+<section>
+  <h2>Web Map Tiles</h2>
+  <img  styl="width:80%;" src="/slides/2017-mapbox-ohio-gis/img/map-tiles-leaflet.jpg" />
+  <em>img source: <a href="http://leafletjs.com/examples/zoom-levels/">leafletjs.com/examples/zoom-levels</a></em>
+</section>
+<section>
+  <h2 id="-mapbox-vector-tiles-mvt-https-www-mapbox-com-vector-tiles-specification-"><a href="https://www.mapbox.com/vector-tiles/specification/">Mapbox Vector Tiles (MVT)</a></h2>
+  <p>MVT is slowly becoming an industry standard.</p>
+  <p><img src="/slides/2017-mapbox-ohio-gis/img/logos2.jpg" alt=""></p>
+</section>
+<section>
+  <h1 id="why-br-use-vector-tiles-https-developmentseed-org-blog-2017-08-09-mapbox-query-data-">Why<br>Use <a href="https://developmentseed.org/blog/2017/08/09/mapbox-query-data/">Vector Tiles</a>?</h1>
+</section>
+<section>
+  <h2>Client-Side Rendering<br>=<br>Potential Savings Server-Side</h2>
+</section>
+<section>
+  <h1 id="access-to-underlying-vector-attribute-data">Unlimited</h1>
+  <img src="/slides/2017-mapbox-ohio-gis/img/mapbox-styles.jpg" alt="mapbox-styles"></img>
+  <h1>Basemaps</h1>
+</section>
+<section>
+  <h1 id="access-to-underlying-vector-attribute-data">Access to Attribute Data</h1>
+</section>
+<section>
+  <h2 id="performance">Performance</h2>
+  <p><a href="https://www.arcgis.com/home/webmap/viewer.html?useExisting=1">AGOL Raster Basemap</a></p>
+  <p><strong>~70 Image Requests, 1100kb</strong>
+    <br><br>
+    <a href="http://www.openstreetmap.org/#map=8/38.987/-82.722">OpenStreetMap Raster</a></p>
+  <p><strong>~45 Image Requests, 749kb</strong>
+    <br><br>
+    <a href="https://www.ovrdc.org/apps/travel-times.html#8/38.604/-81.639">Vector Tile Basemap</a></p>
+  <p><strong>~20 Vector Tile requests, 759kb</strong></p>
+  <p><em>This includes feature data!!</em></p>
+</section>
+<section>
+  <iframe data-src="/slides/2017-mapbox-ohio-gis/mapbox.html" width="1000" height="600" frameborder=no></iframe>
+</section>
+<section>
+  <h1 id="how">How</h1>
+  <h3>
+    <span class="fragment" data-fragment-index="0">Raw Data</span>
+    <span class="fragment"  data-fragment-index="1" style="color:firebrick;">--&gt;</span><span class="fragment"  data-fragment-index="1">&nbsp;GeoJSON</span>
+    <span class="fragment" style="color:gray;" data-fragment-index="2"><br />--&gt;</span><span class="fragment" style="color:gray;" data-fragment-index="2">&nbsp;Vector Tiles</span>
+    <span class="fragment" style="color:gray;" data-fragment-index="2">--&gt;</span><span class="fragment" style="color:gray;" data-fragment-index="2">&nbsp;Server</span>
+    <span class="fragment" style="color:firebrick;" data-fragment-index="4"><br />--&gt;</span><span class="fragment"  data-fragment-index="4">&nbsp;JavaScript API</span>
+    <span class="fragment" style="color:firebrick;" data-fragment-index="5">--&gt;</span><span class="fragment"  data-fragment-index="5">&nbsp;Browser</span>
+  </h3>
+  <em class="fragment" data-fragment-index="6">or just use Mapbox and Mapbox Studio</em>
+</section>
+<section>
+  <h2><a href="https://www.mapbox.com/studio">Mapbox Studio</a></h2>
+  <img src="/slides/2017-mapbox-ohio-gis/img/studio-1.jpg" alt="">
+</section>
+<section>
+  <h2><a href="https://www.mapbox.com/studio">Mapbox Studio</a></h2>
+  <img src="/slides/2017-mapbox-ohio-gis/img/studio-2.jpg" alt="">
+</section>
+<section>
+  <h1 id="building-the-br-mapbox-gl-js-https-www-mapbox-com-mapbox-gl-js-api-map">Coding the Map from Scratch</h1>
+</section>
+<section>
+  <h1 id="tools">Tools</h1>
+  <h3><a href="https://atom.io/" target="_blank">Atom</a>/<a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a></h3>
+  <h3><a href="https://openmaptiles.com/">OpenMapTiles</a> - Basemap Tiles</h3>
+  <h3><a href="https://github.com/project-open-data/esri2open">esri2open</a>/<a href="http://mapshaper.org">mapshaper</a> - GeoJSON</h3>
+  <h3><a href="https://github.com/mapbox/tippecanoe">Tippecanoe</a> - Vector Tiles</h3>
+  <h3><a href="http://www.gartrellgroup.com/vector-tiles-for-all/" target="_blank">Node JS</a> &amp; <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04">Nginx</a> - Tile Server</h3>
+  <h3><a href="https://github.com/Leaflet/Leaflet.VectorGrid">Leaflet</a>/<a href="https://www.mapbox.com/mapbox-gl-js/api/">Mapbox</a>/<a href="https://openlayers.org/en/latest/examples/mapbox-vector-tiles.html" target="_blank">OpenLayers</a></h3>
+</section>
+<section>
+  <h1><a href="https://www.mapbox.com/mapbox-gl-js/style-spec/" target="_blank">Mapbox</a> Web Map Building Blocks</h1>
+</section>
+<section>
+  <h1 id="sources">Sources</h1>
+  <h2 id="geojson-vector-tiles-raster-tiles-images-videos" style="color:black!important;">GeoJSON, Vector Tiles, Raster Tiles, Images, Videos</h2>
+</section>
+<section>
+  <h1 id="layers">Layers</h1>
+  <h2 id="points-lines-polygons-3d-polygons-rasters" style="color:black!important;">Background, Line, Circle, Fill, Fill-Extrusion, Symbol</h2>
+</section>
+<section>
+  <h1 id="properties">Properties</h2>
+  <h2 id="bearing-pitch-light-sprites-glyphs-transition" style="color:black!important;">Bearing, Pitch, Light, Sprites, Glyphs, Transition</h2>
+</section>
+<section>
+  <h3 id="-example-1-basic-https-ovrdc-github-io-gis-tutorials-mapbox-01-basic-map-"><a href="https://ovrdc.github.io/gis-tutorials/mapbox/03-query-features/#4/39.94/-95.52" target="_blank">Fill & Query</h3>
+  <img class="maps" src="/slides/2017-mapbox-ohio-gis/img/example-1.jpg"></a>
+</section>
+<section>
+  <h3 id="-example-2-swipe-map-https-ovrdc-github-io-gis-tutorials-mapbox-swipe-map-"><a href="https://ovrdc.github.io/gis-tutorials/mapbox/swipe-map/" target="_blank">Fill with Data-Driven Styles</h3>
+  <img class="maps" src="/slides/2017-mapbox-ohio-gis/img/example-2.jpg"></a>
+</section>
+<section>
+  <h3 id="-example-3-filter-https-www-ovrdc-org-apps-accident-explorer-html-"><a href="https://www.ovrdc.org/apps/accident-explorer.html" target="_blank">Filtering</h3>
+  <img class="maps" src="/slides/2017-mapbox-ohio-gis/img/example-3.jpg"></a>
+</section>
+<section>
+  <h3 id="-example-4-extrusion-https-www-ovrdc-org-apps-block-group-explorer-html-"><a href="https://www.ovrdc.org/apps/block-group-explorer.html" target="_blank">Fill-Extrusion & Pitch</h3>
+  <img class="maps" src="/slides/2017-mapbox-ohio-gis/img/example-4.jpg"></a>
+</section>
+<section>
+  <h3 id="-example-5-tileserver-https-tileserver-ovrdc-org-"><a href="https://www.ovrdc.org/apps/mapbox-parcel-viewer.html" target="_blank">Parcel Viewer & JSON Search</h3>
+  <img class="maps" src="/slides/2017-mapbox-ohio-gis/img/example-5.jpg"></a>
+</section>
+<section>
+  <h2 id="thanks-">Thanks!</h2>
+  <h3 id="malcolm-meyer">Malcolm Meyer</h3>
+  <p>Transportation Planning Coordinator</p>
+  <p><a href="http://www.ovrdc.org">Ohio Valley Regional Development Commission</a></p>
+  <br>
+</section>
+<section>
+  <h3 id="slide-sources">Slide Sources</h1>
+  <p style="font-size: 14px;"><a href="https://stackoverflow.com/questions/36426428/mapbox-gl-js-3d-elevation-profile">https://stackoverflow.com/questions/36426428/mapbox-gl-js-3d-elevation-profile</a>
+    <a href="http://scottsfarley.com/cartography/coding/2017/02/11/DC-Mapbox-Plugin.html">http://scottsfarley.com/cartography/coding/2017/02/11/DC-Mapbox-Plugin.html</a>
+    <a href="https://blog.mapbox.com/shading-and-lighting-3d-features-in-mapbox-gl-js-e544695cd64">https://blog.mapbox.com/shading-and-lighting-3d-features-in-mapbox-gl-js-e544695cd64</a>
+    <a href="https://blog.mapbox.com/introducing-data-driven-styling-in-mapbox-gl-js-f273121143c3">https://blog.mapbox.com/introducing-data-driven-styling-in-mapbox-gl-js-f273121143c3</a>
+    <a href="https://blog.mapbox.com/dive-into-large-datasets-with-3d-shapes-in-mapbox-gl-c89023ef291">https://blog.mapbox.com/dive-into-large-datasets-with-3d-shapes-in-mapbox-gl-c89023ef291</a></p>
+</section>
+
+<script>
+  var b = {
+    "500": "url('/slides/2017-mapbox-ohio-gis/img/title-big.jpg')",
+    "11": "url('/slides/2017-mapbox-ohio-gis/img/streets.jpg')",
+    "27": "url(/slides/2017-mapbox-ohio-gis/img/lancaster.jpg)"
+  };
+  window.addEventListener('hashchange', function() {
+    changeBackground();
+  }, false);
+  window.onload = changeBackground();
+
+  window.onload = revealFullscreen();
+
+  function changeBackground() {
+    document.body.style.background = "white";
+    var reveal = document.querySelector(".reveal");
+    var query = (window.location.href).split("#/");
+    var q = query[1];
+    console.log(q);
+    if (b[q]) {
+      reveal.style.background = b[q] //"url('/slides/2017-mapbox-ohio-gis/img/title-big.jpg')";
+    } else {
+      reveal.style.background = "url('/slides/2017-mapbox-ohio-gis/img/sample2.jpg')";
+    }
+  }
+
+  function revealFullscreen() {
+    var revealDiv = document.querySelector(".reveal");
+		
+    var requestMethod = revealDiv.requestFullscreen ||
+							revealDiv.webkitRequestFullscreen ||
+							revealDiv.webkitRequestFullScreen ||
+							revealDiv.mozRequestFullScreen ||
+							revealDiv.msRequestFullscreen;
+
+    document.addEventListener('keyup', function (event) {
+        if( requestMethod && event.keyCode === 70) {
+          requestMethod.apply( revealDiv );
+        }
+     });
+  }
+
+  /*show interactive maps when clicked*/
+  var maps = document.getElementsByClassName('maps');
+  console.log(maps);
+  for (var i = 0; i < maps.length; i++) {
+      maps[i].addEventListener('click', function(event) {
+        event.preventDefault();
+        var link = this.parentElement.getAttribute("href");
+        this.style.display = "none";
+        this.parentElement.innerHTML += '<iframe src="' + link + '"  width="1000" height="550" frameborder=no></iframe>';
+        return false;
+      }, false);
+  }
+</script>

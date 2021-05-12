@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <% page.layout %> -->
+  <%- partial('_partial/head') %>
+</head> 
+<body>
+  
+  <% if (page.layout == "slides" || page.layout == "big") { %>
+  <%- body %>
+  <%}else{%>
+
+  <%- partial('_partial/nav') %>
+  <%- body %>
+  <%- partial('_partial/footer') %>
+  <%- partial('_partial/site-scripts') %>
+  <%}%>
+
+</body>
+
+</html>

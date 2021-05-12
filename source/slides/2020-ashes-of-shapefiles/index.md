@@ -1,0 +1,353 @@
+---
+title: Ashes of Shapefiles Presentation
+subtitle: The Search for an Enterprise Data Format
+layout: slides
+theme: stark
+date: 2020-09-09
+tags: slides
+transition: fade
+highlight: xcode.css
+style: >-
+  .reveal section p {
+    font-size: 4rem;
+    margin: 10px 0;
+  }
+  .reveal section h2 {
+    color: #7ca62b;
+  }
+
+  .reveal ul li {
+    list-style: none;
+    font-size: 3rem;
+  }
+  .reveal section img {
+    box-shadow: none!important;
+  }
+  del {
+    text-decoration-color: red;
+  }
+  .reveal section strong {
+    color: red;
+  }
+head: >-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+---
+
+<section data-markdown data-separator="///">
+<script type="text/template">
+
+🔥 🔥 🔥 🔥 🔥
+<br />from the ashes<br />of shapefiles<br />
+🔥 🔥 🔥 🔥 🔥
+
+///
+
+# Zanesville, OH
+
+///
+
+![](zanesville.png)
+
+///
+
+## Demographics
+
+|   |   |
+|---|---|
+| Population | 25,376 |
+| Median Age | 37 |
+| Median HH Income | $28,258 |
+| Poverty | 29.3% |
+
+///
+
+## Historical Context
+
+- Esri Licensing Since 2000
+- Two GIS Users
+- City Engineer
+- CAD Technician
+
+
+///
+
+## Legacy Setup
+- ArcMap & ArcPad
+- Shapefiles & Rasters
+- Internal Network Share
+
+///
+
+## 20 Years of Data
+
+- ~300 Shapefiles
+- 20GB Vector Data 
+- 100s of MXDs
+- **100s of .lock Files**
+
+///
+
+![](legacy.jpg)
+
+///
+
+<img src="https://media.giphy.com/media/XWJhb2RI0qjnO/giphy.gif">
+
+///
+
+<img src="https://media.giphy.com/media/pylpD8AoQCf3CQ1oO2/giphy.gif">
+
+///
+
+❗❗❗❗❗❗
+<br>
+File Geodatabases
+<br>
+❗❗❗❗❗❗
+
+///
+
+## FGDB Benefits
+
+- Domains
+- Feature Datasets
+- Geometric Networks
+
+///
+
+# BUT...
+
+///
+
+<img src="https://media.giphy.com/media/3o7buhiXgPU8GmQp4A/giphy.gif">
+
+///
+## FGDB Issues
+- Local FGDB Not Backed Up
+- S  l  o  w Network
+- **rANd0m Data Loss**
+
+///
+
+## Esri Support
+
+> FGDB served over a network share 
+is NOT a supported setup
+///
+
+## Solution
+
+RDMS Database on Enterprise
+
+///
+### 😟 🙍 🥺
+### No Esri Enterprise
+
+///
+
+### SQL Server Express 
+### ✨ 😺 😃 ✨
+
+///
+
+### Get Glowing Review From SQL Exp User
+
+///
+
+## Repurposed Server
+- Windows Server 2012
+- 8 Cores, 16GB RAM
+
+///
+
+### Setup SQL Server Express, Permissions & Import Data
+
+///
+
+# Everything was working great...
+
+///
+
+![](pitfall_02.jpg)
+
+///
+## SQL Express Issues
+- Slow to Select/Start Editing
+- Three Connection Limit
+- 4GB Mem Limit
+///
+
+![](https://thumbs.gfycat.com/BriefWeeGalah-small.gif)
+
+///
+
+~~Shapefiles~~
+
+~~FGDB~~
+
+~~SQL Server Express~~
+
+///
+
+### 🧐 Alternatives 🤔
+
+///
+
+![](https://i.pinimg.com/originals/85/45/27/85452729e29da56b29ed73ac93dfcd79.gif)
+
+///
+
+# Poll
+
+///
+
+<img src="https://cdn.glitch.com/08811e29-66d4-4db8-9f1b-57c0d4d342fe%2Fqgis_azure.png?v=1596030658715">
+
+///
+
+# Overview
+
+///
+
+## Database
+
+PostgreSQL v11 & 
+
+PostGIS v3.0
+
+///
+
+## PostgreSQL v11
+
+Postgres First Released in 1996
+
+View-Only Support in ArcMap & ArcPro
+
+///
+
+# Desktop
+
+///
+
+## QGIS 3.1
+
+Editing & Print Maps
+
+///
+
+## ArcGIS Pro
+
+Editing of AGOL & Print Maps
+
+///
+
+## ArcMap
+
+Viewer for Legacy Users (2)
+
+///
+
+# Web
+
+///
+
+## Database to Web
+
+Postgres -> <br>
+
+NodeJS -> <br>
+
+GeoJSON -> <br>
+
+Vector Tiles
+
+///
+
+## Mapbox GL JS
+- Internal Applications
+- Public Map Viewer
+- **Simple Print Maps**
+
+///
+
+<img src="./web-print-map-ii.jpg" width="80%">
+
+///
+
+## ArcGIS Online
+
+- Water Utility Data
+- Collector
+- Dashboards
+- WebAppBuilder
+- Story Maps
+
+///
+
+# Benefits
+
+///
+
+## Postgres/QGIS Benefits
+
+- Database Views
+- Geometry Checks
+- QGIS Projects stored in DB
+- **Open Licensing**
+- QGIS Plugins
+
+///
+
+# Issues
+
+///
+
+## Missing Features
+
+- Editor Tracking
+- Editing in ArcMap or Pro
+- Esri Transformations
+- Geometry Fields
+- Postgres != ArcGIS Online
+
+///
+
+## Enterprise?
+
+///
+
+## Issues with Upgrading
+
+- Administration Changes 
+- Benefits Difficult to Communicate
+- COVID-19 & Budget Cuts
+
+///
+
+# Future Direction
+
+///
+
+## Live Web Services
+
+> [pg_featureserv](https://311.coz.org/api/v1/feature-server/collections.html)
+> [pg_tileserv](https://311.coz.org/api/v1/vector-tiles/public.adm_mus_parcels.html)
+
+///
+
+![](phoenix.png)
+
+///
+
+## Shapfiles
+
+> Still used as the default cross-platform data format.
+
+///
+
+# Thanks!
+
+- malcolmtmeyer on gmail
+- @getbounds on twitter
+
+</script>

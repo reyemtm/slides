@@ -1,0 +1,50 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link rel="manifest" href="/manifest.json"> -->
+<meta name="theme-color" content="<%- config.color %>" />
+
+<!-- hexo opengraph -->
+<%- open_graph({
+  twitter_id: config.twitter,
+  image: "/assets/img/" + config.defaultimage
+}) %>
+
+<% if (!page.img) {%>
+<!-- image -->
+<meta name="og:image" content="/assets/img/<%- config.defaultimage %>">
+<%}%>
+
+<% if (config.favicon){ %>
+<link rel="icon" href="<%- config.favicon %>">
+<% } %>
+
+<% if (page.layout == "slides" || page.layout == "big" || page.layout === "landing") { %><%}else{%>
+<!-- default styles -->
+<link rel="stylesheet" href="/style.css">
+<!-- <link rel="stylesheet" href="/prism.css"> -->
+<link rel="stylesheet" href="/xcode.css">
+
+<%}%>
+</head>
+
+<% if (page.head) {%>
+<!-- scripts and styles in page.header -->
+<%- page.head %>
+<%}%>
+
+<!-- page.style -->
+<% if (page.style) {%>
+<style>
+<%- page.style %>
+</style>
+<%}%>
+
+<% if (page.css) {%>
+<style>
+<%- page.css %>
+</style>
+<%}%>
+
+<% if (is_home()) {%>
+<!-- is_home -->
+<%}%>
