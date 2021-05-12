@@ -41,32 +41,32 @@ style: "* { text-shadow: none;} .reveal h1{font-size:4.9em;  text-shadow:none;} 
       </section>
       <section>
         <h4>Fullscreen Leaflet Map</h4>
-        <pre><code data-trim>
-&lt;html lang=&quot;en&quot;&gt;
-    &lt;head&gt;
-      &lt;meta charset=&quot;utf-8&quot; /&gt;
-      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, user-scalable=no&quot;&gt;
-      &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/leaflet.css&quot; /&gt;
-      &lt;script src=&quot;/assets/leaflet.js&quot;&gt;&lt;/script&gt;
-      &lt;style&gt;
-      #map &#123;position:absolute;top:0;bottom:0;left:0;width:100%;&#125;
-      &lt;/style&gt;
-    &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id='map'&gt;&lt;/div&gt;
-    &lt;script src=&quot;map.js&quot;&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+        <pre>
+          <code class="javascript hljs"><span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"utf-8"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1.0, user-scalable=no"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/assets/leaflet.css"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"/assets/leaflet.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
+  <span class="hljs-id">#map</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value">absolute</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">100%</span></span></span>;}</span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'map'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"map.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+</span>
 </code></pre>
-        <pre><code data-trim>
-var map = new L.Map('map');
+</section>
+<section>
+  <pre><code data-trim javascript>var map = new L.Map('map');
 map.setView([41.5, -81.7], 10)
 
 var layerControl = new L.control.layers().addTo(map);
 
 var scale = L.control.scale().addTo(map);
-</code></pre>
-      </section>
+    </code></pre>
+</section>
 
 <section>
   <h3>We Forgot the <strong>Layers</strong>!</h3>
