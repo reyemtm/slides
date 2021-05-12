@@ -1,7 +1,7 @@
 # Site
 title: Slides
 subtitle:
-description: "Presentations and talks by Malcolm Meyer on geospatial topics."
+description: "Presentations, talks, and workshops by Malcolm Meyer on data visualization and all things geospatial."
 keywords: ["gis", "blog", "geospatial", "vector tiles", "mapbox", "leaflet", "web maps", "dataviz"]
 author: Malcolm Meyer
 language: en
@@ -39,23 +39,25 @@ render_drafts: false
 post_asset_folder: true
 relative_link: false
 future: true
+pretty_urls:
+  trailing_index: false
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
-  per_page: 12
+  per_page: 100
   order_by: -date
 
 # Pagination
 ## Set per_page to 0 to disable pagination
-per_page: 1000
+per_page: 100
 pagination_dir: page
-archive: 1000
+archive: 100
 
 # Category & Tag
-default_category: blog
+default_category: slides
 category_map:
 tag_map:
 
@@ -84,7 +86,7 @@ include:
 feed:
   type: atom
   path: feed.xml
-  limit: 1000
+  limit: 100
   hub:
   content:
   content_limit: 200
@@ -92,7 +94,7 @@ feed:
   order_by: -date
 
 html_prettify:
-  enable: true
+  enable: false
   #exclude:
   #   - "*/**/test"
   options:
