@@ -40,7 +40,7 @@
     <!--end slide-->
   </div>
 </div>
-<script src="/reveal.js/js/reveal.js"></script>
+<script src="/reveal.js/reveal.js"></script>
 
 <script>
   // More info about config & dependencies:
@@ -50,10 +50,14 @@
     transition: '<% if (page.transition) {%><%= page.transition %><%} else {%>fade<%}%>',
     hash: true,
     dependencies: [
-      { src: '/reveal.js/plugin/markdown/marked.js' },
-      { src: '/reveal.js/plugin/markdown/markdown.js' },
-      { src: '/reveal.js/plugin/notes/notes.js', async: true },
-      { src: '/reveal.js/plugin/highlight/highlight.js', async: false }
+      { src: '/assets/reveal.js/plugin/markdown/marked.js' },
+      { src: '/assets/reveal.js/plugin/markdown/markdown.js' },
+      { src: '/assets/reveal.js/plugin/notes/notes.js', async: true },
+      // { src: '/assets/reveal.js/plugin/highlight/highlight.js', async: true }
     ]
   });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.1/highlight.min.js"></script>
+<script>
+hljs.initHighlightingOnLoad();
 </script>
