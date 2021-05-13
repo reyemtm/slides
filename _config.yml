@@ -1,7 +1,8 @@
 # Site
 title: Slides
 subtitle:
-description: "Presentations, talks, and workshops by Malcolm Meyer on data visualization and all things geospatial."
+description: >- 
+  Presentations, talks, and workshops on data visualization, open source geospatial tools, technology and the occasional off-topic rant.
 keywords: ["gis", "blog", "geospatial", "vector tiles", "mapbox", "leaflet", "web maps", "dataviz"]
 author: Malcolm Meyer
 language: en

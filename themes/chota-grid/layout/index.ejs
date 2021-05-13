@@ -1,6 +1,13 @@
 <main class="container">
 <div class="grid">
   <section>
+    
+    <blockquote>
+      <%- config.description %>
+    </blockquote>
+
+  </section>
+  <section>
     <% site.pages.sort('path').reverse().each(function(page,i) {%>
       <a href="<%- page.path %>"><h1><%- page.title %></h1></a>
     <%})%>
