@@ -1,8 +1,8 @@
 ---
+layout: reveal
 title: Jekyll, Leaflet & TurfJS
 subtitle: Open Source Tools for Web Mapping
 date: 2016-08-13
-layout: slides
 img: neohio-gis-thumb.jpg
 description: >- 
   Using the power of open source through Jekyll, Leaflet and TurfJS for
@@ -16,52 +16,47 @@ style: "* { text-shadow: none;} .reveal h1{font-size:4.9em;  text-shadow:none;} 
     1.3; }"
 ---
 
-<section>
-    
-    <h1>
-      Jekyll, Leaflet & Turf JS
-    </h1> 
+<section data-markdown data-separator="---">
 
-    A Presentation to the Northeast Ohio GIS Sympoisum
-
-    August 25, 2016 - Malcolm Meyer
+  <textarea data-template>
+  # [Jekyll](https://jekyllrb.com), [Leaflet](http://leafletjs.com) &amp; [TurfJS](http://turfjs.org)
+  
+  A Presentation to the [Northeast Ohio GIS Sympoisum](http://www.neohiogis.org/)
+  
+  August 25, 2016 - [Malcolm Meyer](https://getbounds.com)
+  ---
+  ## Location
+  ## **Information** <!-- .element: class="fragment" -->
+  ---
+  # Maps tell a **Story**
+  ---
+  <h4>Low to Moderate Income</h4>
+  <p data-height="650" data-theme-id="dark" data-slug-hash="kXzAZq" data-default-tab="result" data-user="getbounds" data-embed-version="2" class="codepen"></p>
+  <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+  
+  </textarea>
   </section>
+  
   <section>
-    <h2>Location</h2>
-    <h2>Information</h2>
+  <h4>Fullscreen Leaflet Map</h4>
+  <pre><code data-trim>
 
-  </section>
-  <section>
-  <h1>Maps tell a Story</h1>
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, user-scalable=no&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/leaflet.css&quot; /&gt;
+  &lt;script src=&quot;/assets/leaflet.js&quot;&gt;&lt;/script&gt;
+  &lt;style&gt;
+  #map {position:absolute;top:0;bottom:0;left:0;width:100%;}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id='map'&gt;&lt;/div&gt;
+  &lt;script src=&quot;map.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
 
-</section>
-<section>
-<h4>Low to Moderate Income</h4>
-<p data-height="650" data-theme-id="dark" data-slug-hash="kXzAZq" data-default-tab="result" data-user="getbounds" data-embed-version="2" class="codepen"></p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
-
-      </section>
-      <section>
-        <h4>Fullscreen Leaflet Map</h4>
-        <pre>
-          <code class="javascript hljs"><span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"utf-8"</span> /&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1.0, user-scalable=no"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/assets/leaflet.css"</span> /&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"/assets/leaflet.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">style</span>&gt;</span><span class="css">
-  <span class="hljs-id">#map</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value">absolute</span></span>;<span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span>;<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">100%</span></span></span>;}</span>
-  </span><span class="hljs-tag">&lt;/<span class="hljs-title">style</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'map'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"map.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
-</span>
-</code></pre>
-</section>
-<section>
-  <pre><code data-trim javascript>var map = new L.Map('map');
+  </code></pre>
+  <pre><code data-trim>var map = new L.Map('map');
 map.setView([41.5, -81.7], 10)
 
 var layerControl = new L.control.layers().addTo(map);
@@ -142,7 +137,7 @@ $.getJSON("/assets/blockgroups.geojson", function(data) {
 </section>
 
 <section>
-  <h3>Block Groups (Topojson)</h3>
+  <h4>Block Groups (Topojson)</h4>
   <p data-height="650" data-theme-id="dark" data-slug-hash="pbqxAx" data-default-tab="result" data-user="getbounds" data-embed-version="2" class="codepen"></p>
   <script async src="https://assets.codepen.io/assets/embed/ei.js"></script>
 </section>
@@ -381,17 +376,16 @@ var layerControl = new L.control.layers(basemaps).addTo(map);
   </code></pre>
 </section>
 
-<section>
-  <h2> Thanks!</h2>
-
-  <h3>Malcolm Meyer</h1>
-
-  <a href="https://twitter.com/@getbounds">@getBounds</a>
-  <br>
+<section data-markdown>
+  <textarea data-template>
+    ## Thanks!
   
-  https://github.com/ovrdc/neohio-gis-2016-leaflet-jekyll-turf
-  <br>
-
-  https://codepen.io/collection/nVjQjB/
-</script>
-</section>
+    ### Malcolm Meyer
+    
+    [@getBounds](https://twitter.com/getbounds)
+    
+    [GitHub Examples](https://github.com/ovrdc/neohio-gis-2016-leaflet-jekyll-turf)
+    
+    [CODEPEN Examples](https://codepen.io/collection/nVjQjB/)
+  </textarea>
+  </section>

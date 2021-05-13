@@ -22,8 +22,7 @@
     "hexo-renderer-marked": "^4.0.0",
     "hexo-renderer-stylus": "^2.0.0",
     "hexo-server": "^2.0.0",
-    "hexo-theme-landscape": "^0.0.3",
-    "sharp": "^0.28.2"
+    "hexo-theme-landscape": "^0.0.3"
   },
   "devDependencies": {
     "reveal.js": "^4.1.0"
