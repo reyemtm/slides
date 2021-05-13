@@ -1,0 +1,166 @@
+---
+layout: reveal
+title: Beyond the Desktop
+subtitle: Open Source Experiments in Web Mapping
+theme: night
+style:>-
+  .reveal .slides > section, .reveal .slides > section > section {
+		padding:0;
+    line-height:1.2;
+	}
+  .reveal p {
+    margin:inherit;
+  }
+	.reveal ul {
+		line-height: 1.3;
+	}
+
+	strong {color: firebrick;}
+
+---
+        
+        <section data-markdown data-separator="___" data-separator-vertical="^\n--\n$" data-background="img/ohio.png">
+        <textarea data-template type="text/template">
+# Beyond the Desktop
+
+###<em>Open Source Experiments in Web Mapping</em><br /><br />
+
+Malcolm Meyer | Nick Kroncke
+
+Ohio Valley Regional Development Commission
+<br /><br />
+**Ohio GIS Conference September 30, 2016**
+___
+### [Interactive Data Visualizations](https://www.washingtonpost.com/2016-election-results/us-primaries/)
+![](img/img-01-politics.png)
+___
+### [Native Mobile Apps](https://play.google.com/store/apps/details?id=com.clevelandmetroparks.trailsapp&hl=en)
+![](img/img-02-native.png)
+___
+### [Machine Learning](http://www.csmonitor.com/Technology/2016/0222/How-Facebook-s-machine-learning-creates-highly-detailed-population-maps)
+Yellow roads were programatically mapped by Facebook.
+![](img/img-03-machine-learning.png)
+___
+### [Cartography as Art](http://www.cutmaps.com/pages/custom-work)
+![](img/img-04-art.jpg)
+___
+### [UAV Mapping](https://www.sensefly.com/home.html)
+![](img/img-05-uav.png)
+___
+###Of Course...
+![](img/pokemon.jpg)
+___
+## [Web GIS Trends](https://www.google.com/trends/explore?date=all&q=%2Fm%2F0h7rn5,arcgis%20online,d3.js,%2Fm%2F0w532pk)
+![](img/gis-trends-web.png)
+___
+## So You want a Web Application?
+- In-House vs Third Party Developer<!-- .element: class="fragment" data-fragment-index="1" -->
+- Free Open Source Software (FOSS) vs Proprietary Solutions<!-- .element: class="fragment" data-fragment-index="1" -->
+<br /><br />
+### Issue: "Out of the box" solutions can limit your capabilities while open source development appears too complex<!-- .element: class="fragment" data-fragment-index="2"-->
+### Solution: Understand the limitations and use the best tool for the job <!-- .element: class="fragment" data-fragment-index="3"-->
+
+___
+## Rolling Your Own Solution
+### **Modern GIS Toolkit**<!-- .element: class="fragment" -->
+ArcGIS Desktop<!-- .element: class="fragment" --><span class="fragment"> | Python</span><span class="fragment"> | QGIS</span><span class="fragment"> |
+  <!--- Leaflet | Mapshaper | TurfJS | MapboxGL| Atom | PostGIS | Spatialite | GDAL | GRASS | Carto | Tilezen | NodeJS | Google Maps API | Esri Javascript API | Linux | Jekyll | --->
+  And Many More...</span>
+![](img/os_icons.png) <!-- .element: class="fragment" -->
+___
+##What Tools does **OVRDC** Use?
+ - ArcMap & QGIS
+ - Leaflet & Chart.js
+ - Atom & Sublime Text (Text Editors)
+ - Jekyll (www.ovrdc.org/apps)
+ - GitHub (Code Repository)
+ - Google Drive & Google APIs
+ - Wordpress (www.ovrdc.org)
+ - ArcGIS Online & Carto
+___
+## In **FOSS** There is No Help Desk!!
+### Resources to Get Started<!-- .element: class="fragment" -->
+- Codecademy, Khan Academy, CodePin (Javascript)<!-- .element: class="fragment" -->
+- YouTube!!<!-- .element: class="fragment" -->
+- Jekyll Website Templates (HTML)<!-- .element: class="fragment" -->
+- Formal Training<!-- .element: class="fragment" -->
+<br /><br />
+### Troubleshooting<!-- .element: class="fragment" -->
+- Official Forums, Documentation & Examples<!-- .element: class="fragment" -->
+- GitHub/Code Repository Issue Trackers<!-- .element: class="fragment" -->
+- Interact Directly with the Developers<!-- .element: class="fragment" -->
+- Stack Exchange/Overflow & Reddit<!-- .element: class="fragment" -->
+- Misc Forums, Blogs & Tutorials<!-- .element: class="fragment" -->
+___
+## Considerations for Web Apps
+#### If you have...<!-- .element: class="fragment" -->
+- Extremely Large Data Sets<!-- .element: class="fragment" -->
+- Need Complex Online Editing Capabilities<!-- .element: class="fragment" -->
+- Future Growth Potential - Need to Scale<!-- .element: class="fragment" -->
+
+<br />
+#### Look into a GIS Server or Hosted Solution (Carto/Mapbox)<!-- .element: class="fragment" -->
+### **IS ALL THIS REALLY NECESSARY?**<!-- .element: class="fragment" -->
+___
+## Caution
+### Short List of Deprecated Web Services<br />2014-Present
+#### [Web Hosting in Google Drive](https://techcrunch.com/2015/08/31/google-starts-deprecating-web-hosting-support-in-google-drive/)
+#### [Google Maps Engine](http://www.zdnet.com/article/google-maps-engine-quietly-coming-to-a-halt-as-sign-up-window-shutters/)
+#### [Google's Android App My Tracks](https://www.engadget.com/2016/01/29/rip-google-my-tracks-app/)
+#### [Copy Cloud Storage](http://lifehacker.com/near-unlimited-cloud-storage-service-copy-com-is-shutti-1756413619)
+#### Dropbox Public Folder Hosting
+___
+## OVRDC Client-Side Use Case
+### FOSS JavaScript APIs: **Leaflet & TurfJS**
+- Run on any Web Server<!-- .element: class="fragment" data-fragment-index="1"-->
+- Free & Open Source<!-- .element: class="fragment" data-fragment-index="1"-->
+- Strong Online Community<!-- .element: class="fragment" data-fragment-index="1"-->
+- HTML5: Windows/Android/iOS<!-- .element: class="fragment" data-fragment-index="1" -->
+
+&<!-- .element: class="fragment" data-fragment-index="5"-->
+### Cloud-Based Storage/APIs<!-- .element: class="fragment" data-fragment-index="5"-->
+(Google, Dropbox, Firebase, Others...)<!-- .element: class="fragment" data-fragment-index="5"-->
+<br /><br />
+- User Feedback<!-- .element: class="fragment" data-fragment-index="6"-->
+- Image/Asset Storage<!-- .element: class="fragment" data-fragment-index="6"-->
+- Freemium Model<!-- .element: class="fragment" data-fragment-index="6"-->
+___
+## [Demographic Explorer](/demographic-explorer.html)
+Simple, Targeted App - Inspired by the NACO County Explorer
+![](img/demo-explore.png)
+___
+## Cloud Based Collection Apps
+[Google Scripts with Image Upload](http://collect.ovrdc.org) | [Google Firebase Version](https://www.ovrdc.org/apps/firebase-collection-app.html)
+![collect-img](img/collect.png)
+___
+## [FRA Transit Data](https://www.ovrdc.org/apps/rtpo-transit.html)
+Using Public APIs: Current Data & Real-Time Apps
+![transit-img](img/transit.png)
+___
+## [Parcel Viewer](https://www.ovrdc.org/apps/geojson-tiles.html)
+A Client-Side Parcel Viewer with Feature Search
+![](img/parcel-viewer.png)
+___
+## [Bridge Analysis with TurfJS](https://www.ovrdc.org/apps/turf.html)
+![turf-img](img/bridges.png)
+___
+## Looking **Forward**
+### Cloud-Hosted PostGIS
+### Vector Tile Server
+### OVRDC Custom Basemaps
+### Utilize QGIS in New Projects
+___
+## Thanks!
+
+#### [Ohio Valley Regional Development Commission](http://www.ovrdc.org)
+#### [OVRDC on GitHub | Web Map Templates](https://ovrdc.github.io)
+
+Malcolm Meyer | Nick Kroncke
+
+
+mmeyer@ovrdc.org | nkroncke@ovrdc.org
+
+<span style="font-size:small;">[Home](#)</span>
+
+</textarea>
+</section>
