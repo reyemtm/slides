@@ -335,7 +335,7 @@ function buildMap() {
           data: counties
         }
       },
-      "glyphs": "https://www.getbounds.com/slides/2018-intro-to-turfjs/{fontstack}/{range}.pbf",
+      "glyphs": "/2018-intro-to-turfjs/{fontstack}/{range}.pbf",
       layers: [{
         id: "background",
         "type": "background",

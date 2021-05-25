@@ -1,44 +1,158 @@
 ---
-layout: reveal
+layout: slides-reveal
 title: Raster Tiles
-subtitle: Subtitle
-theme: stark
+theme: night
+markdown: true
 date: 2021-05-11
 tags: slides
 transition: fade
-highlight: xcode.css
 ---
 
-<section data-markdown>
-  <textarea data-template>
-
-- http://emapr.ceoas.oregonstate.edu/pages/education/how_to/how_to_tws.html
-- https://developers.google.com/kml/articles/raster
+# DIY Raster Tiles with GDAL
 
 ---
 
-# h1
+## Prerequisites
+
+- Have gdal installed and working on your machine
+- Obtain a copy of the sample rasters from the USB drives
 
 ---
 
-## h2
+## Overview
+
+- Brief explanation of raster tile formats
+- Inspect the raster with gdalinfo
+- Remember to transform your data or be willing to live with the results
+- Run the gdal2tiles tool
 
 ---
 
-## h3
+- Supplement the tiles with the newer imagery
+- Tiling can be run on any image, not just a georeferenced image
+- Show how to use mb-util to create an mbtiles file
+- Millions of files can be difficult to manage -create an mbtiles file or protomap file
 
-*italics*
+---
 
-**strong**
+## File Tree and mbtiles Comparison
 
-> Blockquote
+#### One County Tiled to Zoom Level 16
 
-``code``
+filetree
 
-```JavaScript
-const a = [1,2,3];
-a.forEach(i => i = i++);
+1.54 GB 14K Files
+
+mbtiles
+
+1.62 GB 1 file
+
+#### Zoom Level 21
+
+---
+
+The world is (not) a square.
+
+256x256 
+
+or
+
+512x512
+
+for high res screens (twice the amount of pixels in the same amount of space)
+
+---
+
+gdal-info
+
+XYZ map tiles what are they brief explanation
+
+![zoom-levels](zoom-levels.png)
+
+---
+
+[See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
+
+Colorizing in QGIS
+NODATA
+
+Clip and project the raster
+Cut the raster into png XYZ image tiles
+Convert the png images to webp
+Directly copy the files to the server via USB
+Each additional zoom inceases the total tiles by previous zoom number of tiles x 2
+Optionally convert the directory of png image tiles to the webp format.
+
+
+---
+
+## Get the Data
+
+---
+
+transparency
+
+---
+
+web preview
+
+---
+
+multi-threaded
+
+---
+
+output format
+
+- png
+- jpg
+- webp
+
+---
+
+> Warning Live Code Ahead!!
+
+---
+
+QGIS Built-in Converter
+
+
+Load the raster into QGIS
+Change the zoomed in sampling to Average and any other settings under properties
+Export to raster tiles using the processing tool Generate XYZ Tiles
+
+---
+
+Use the latest gdal2tiles.py python script downloaded from the gdal GitHub site to cut the tif into a folder of high resolution raster tiles for use in web mapping. There are similar scripts that will output to mbtiles, output to geopackage, or write to JPG files. This script was originally written by the developer of MapTiler. The default for this updated script is to use all the availabel cpu cores, so be careful when running it. Set the --processes to something you can live with, such as half the available cores. A maximum zoom limit of 20 seems to be a good limit, which is about street level, however if you want to use them in AGOL you will need to go to zoom 21 as AGOL does not overzoom tiles.
+
+---
+
+```Python
+python.exe gdal2tiles.py -xyz -v sourceFile.tif outputFolder
 ```
 
-</textarea>
-</section>
+```Python
+python gdal2tiles.py -e -z 0-21 -v --xyz --processes=ALL original_tiff_file destination_directory
+```
+
+```
+--tilesize=512
+```
+
+## Hosting your Tiles
+
+- https://github.com/maptiler/tileserver-php
+- https://github.com/consbio/mbtileserver
+
+---
+
+#### References
+
+- https://blog.mastermaps.com/2008/03/generating-map-tiles-with-gdal2tiles.html
+- http://build-failed.blogspot.com/2012/11/zoomable-image-with-leaflet.html
+- https://alastaira.wordpress.com/2011/07/11/maptiler-gdal2tiles-and-raster-resampling/
+- https://wiki.openstreetmap.org/wiki/TMS
+- https://pvanb.wordpress.com/2017/03/06/raster2mbtiles/
+- https://github.com/ecometrica/gdal2mbtiles
+- http://emapr.ceoas.oregonstate.edu/pages/education/how_to/how_to_tws.html
+- https://developers.google.com/kml/articles/raster

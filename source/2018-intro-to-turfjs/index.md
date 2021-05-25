@@ -1,7 +1,7 @@
 ---
 title: Turf JS
 subtitle: Geospatial Analysis for the Browser, Desktop & Server
-layout: big
+layout: slides-big
 theme: light
 date: 2018-09-25
 style: >-
@@ -743,7 +743,7 @@ function buildMap() {
           data: counties
         }
       },
-      "glyphs": "http://www.getbounds.com/slides/2018-intro-to-turfjs/{fontstack}/{range}.pbf",
+      "glyphs": "/2018-intro-to-turfjs/{fontstack}/{range}.pbf",
       layers: [{
         id: "background",
         "type": "background",

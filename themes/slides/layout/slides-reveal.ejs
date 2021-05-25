@@ -1,0 +1,45 @@
+<div class="reveal">
+  <div class="slides" id="slides">
+    <% if (page.markdown) { %>
+    <!-- page.markdown -->
+    <section data-markdown data-separator="---">
+      <textarea data-template>
+      <%- page.content %>
+      </textarea>
+    </section>
+    <%} else {%>
+    <%- page.content %>
+    <%}%>
+  </div>
+</div>
+<script>
+
+  function addStyles(stylesheets) {
+    // for (var s = 0; s < stylesheets.length; s++) {
+    //   let link = document.createElement( 'link' );
+    //   link.rel = 'stylesheet';
+    //   link.type = 'text/css';
+    //   link.href = stylesheets[s];
+    //   document.getElementsByTagName( 'head' )[0].appendChild( link );
+    // }
+    let link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '/reveal.js/dist/print/pdf.css' : '/reveal.js/dist/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+  }
+
+  addStyles()
+
+</script>
+<script src="/reveal.js/dist/reveal.js"></script>
+<script src="/reveal.js/plugin/notes/notes.js"></script>
+<script src="/reveal.js/plugin/markdown/markdown.js"></script>
+<script src="/reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    transition: '<% if (page.transition) {%><%= page.transition %><%} else {%>fade<%}%>',
+    hash: true,
+    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes]
+  });
+</script>

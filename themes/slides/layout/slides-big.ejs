@@ -1,0 +1,24 @@
+<!--layout: big.html-->
+<script>
+  var stylesheets = [
+    "/big/big.css",
+    "/big/highlight.css",
+  ]
+
+  function addStyles(stylesheets) {
+    for (var s = 0; s < stylesheets.length; s++) {
+      let link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = stylesheets[s];
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+  }
+
+  addStyles(stylesheets)
+
+</script>
+<%- page.content %>
+<script src='/big/big.js'></script>
+<script src='/big/highlight.js'></script>
+<script>hljs.initHighlightingOnLoad();</script>

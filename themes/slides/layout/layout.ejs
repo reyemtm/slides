@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <% page.layout %> -->
+  <%- partial('_partial/head') %>
+</head> 
+<body>
+  
+  <% if (page.layout == "slides-reveal" || page.layout == "slides-big") { %>
+  <!-- <%= page.layout %> -->
+  <%- body %>
+  <%}else{%>
+  <!-- nav -->
+  <%- partial('_partial/nav') %>
+  <!-- body -->
+  <%- body %>
+  <!-- footer -->
+  <%- partial('_partial/footer') %>
+  <!-- site-scripts-->
+  <%- partial('_partial/site-scripts') %>
+  
+  <%}%>
+
+</body>
+
+</html>
