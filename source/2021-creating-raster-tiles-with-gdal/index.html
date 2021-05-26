@@ -1,11 +1,30 @@
 ---
 layout: slides-reveal
-title: Raster Tiles
-theme: night
+title: DIY Raster Tiles with GDAL
+theme: stark
 markdown: true
 date: 2021-05-11
 tags: slides
 transition: fade
+css: >-
+  .reveal .slides {
+    max-height: calc(100% - 6rem);
+    overflow: hidden;
+  }
+
+  *, .reveal {
+    font-family: "Inconsolata", monospace;
+  }
+  
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: "Inconsolata", monospace;
+    font-weight: 600;
+  }
+
+  code {
+    font-size: smaller;
+  }
+center: false
 ---
 
 # DIY Raster Tiles with GDAL
@@ -14,28 +33,77 @@ transition: fade
 
 ## Prerequisites
 
-- Have gdal installed and working on your machine
-- Obtain a copy of the sample rasters from the USB drives
+- Have gdal installed and working
+  - ``gdal-info --version``
+- Obtain a copy of the sample rasters
 
 ---
 
 ## Overview
 
-- Brief explanation of raster tile formats
-- Inspect the raster with gdalinfo
-- Remember to transform your data or be willing to live with the results
+- Overview of raster tiles
+- Discussion of Why?
+- Introduction to the tools
+- Inspect the example raster with gdalinfo
 - Run the gdal2tiles tool
+- Introduction to mbtiles
 
 ---
+
+## Why not Commerical (Satellite) Imagery?
+
+- No control over Projections/Transformations
+- Commercial Imagery is Outdated
+- Cannot be supplemented with UAV Mosaics
+- Low Resolution [(15cm Sat Coming Soon!)](https://www.geospatialworld.net/news/radar-satellite-startup-umbra-plans-to-capture-imagery-with-15-cm-resolution/)
+
+---
+
+### Bing Maps (~2016)
+
+![](medcenter-bing.png)
+
+---
+
+### Google Maps (~2018)
+
+![](medcenter-google.png)
+
+---
+
+### Esri/Mapbox (Maxar ~2019)
+
+![](medcenter-mapbox.png)
+
+---
+
+### Local 2020 Aerial
+
+![](medcenter-local.png)
+
+---
+
+### Additional Benefits
 
 - Supplement the tiles with the newer imagery
-- Tiling can be run on any image, not just a georeferenced image
-- Show how to use mb-util to create an mbtiles file
-- Millions of files can be difficult to manage -create an mbtiles file or protomap file
+- Tiling can be run on any image
+- Raw Tiles can be hosted anywhere
+- Tools are free and open source 
 
 ---
 
-## File Tree and mbtiles Comparison
+### One Countywide Aerial
+
+|Source|Files|Format|Size|
+|-|-:|-|-:|
+|Raw Tiff|39,985|TIFF|1150 GB|
+|Orthomosaic|2|TIFF/JPG|62 GB|
+|ArcGIS Cache|1,316|Mixed|101 GB|
+|Raster Tiles|11,511,665|PNG|851 GB|
+|Raster Tiles|11,511,665|WEBP|200 GB|
+|mbtiles|1|SQLITE|?|
+
+---
 
 #### One County Tiled to Zoom Level 16
 
@@ -82,7 +150,6 @@ Convert the png images to webp
 Directly copy the files to the server via USB
 Each additional zoom inceases the total tiles by previous zoom number of tiles x 2
 Optionally convert the directory of png image tiles to the webp format.
-
 
 ---
 

@@ -39,7 +39,8 @@
 <script>
   Reveal.initialize({
     transition: '<% if (page.transition) {%><%= page.transition %><%} else {%>fade<%}%>',
+    center: <% if (page.center === false) {%><%- page.center %><%} else {%>true<%}%>,
     hash: true,
     plugins: [ RevealMarkdown, RevealHighlight, RevealNotes]
-  });
+  })
 </script>
