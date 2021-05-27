@@ -1,12 +1,15 @@
 ---
 layout: slides-reveal
-title: DIY Raster Tiles with GDAL
+title: DIY Raster Tiles with QGIS & GDAL
 theme: stark
 markdown: true
 date: 2021-05-11
 tags: slides
 transition: fade
 css: >-
+  h1 {
+    text-align: inherit;
+  }
   .reveal .slides {
     max-height: calc(100% - 6rem);
     overflow: hidden;
@@ -24,29 +27,76 @@ css: >-
   code {
     font-size: smaller;
   }
+
+  .reveal blockquote {
+    background: hsl(349deg 86% 95%);
+    border-radius: 5px;
+    padding: 2rem;
+  }
+
+  .reveal blockquote, strong, .controls-arrow, em {
+    color: crimson;
+  }
+
 center: false
 ---
 
-# DIY Raster Tiles with GDAL
+# DIY Raster Tiles with QGIS & GDAL
+
+---
+
+# Goal
+
+> Use open source tools to create a file or set of files to serve custom imagery to clients over the internet.
 
 ---
 
 ## Prerequisites
 
+*For those wanting to follow along.*
+
+- Have QGIS 3.x installed and working
 - Have gdal installed and working
   - ``gdal-info --version``
 - Obtain a copy of the sample rasters
 
 ---
 
+## *Note
+
+> Esri tools were used to convert the source MrSID files to an open TIFF format - with no pyramids and JPG YCbCr compression.*
+
+``*QGIS did not render the pyramids in the native MrSID format as clean as Arc* or gdal2tiles.``
+
+---
+
+## Pre-processing
+
+*No Pyramids*
+
+**Raw TIFF Files (ArcGIS Pro)**
+
+1. Created a Mosaic of TIFF files
+2. Project Raster to EPSG:3735 LZW TIFF
+3. Project Raster to EPSG:3857 JPG YCbCR TIFF
+
+**OGRIP MrSID Files (ArcMap)**
+
+1. Copy Raster to EPSG:3857 JPG YCbCR
+
+---
+
+
 ## Overview
 
 - Overview of raster tiles
-- Discussion of Why?
-- Introduction to the tools
-- Inspect the example raster with gdalinfo
-- Run the gdal2tiles tool
+- Discussion of **Why?**
+- Create tiles with GDAL
+- Running in **Production?**
 - Introduction to mbtiles
+- Create mbtiles with QGIS
+- Serve with mbtileserver
+ - pre-built windows exe file
 
 ---
 
@@ -85,10 +135,12 @@ center: false
 
 ### Additional Benefits
 
-- Supplement the tiles with the newer imagery
-- Tiling can be run on any image
+- Supplement the tiles with newer imagery
+- Any image can be tiled, not just ortho imagery
 - Raw Tiles can be hosted anywhere
-- Tools are free and open source 
+- Tools are free and open source*
+
+``*Except for the Esri tools used to convert the source MrSID file``
 
 ---
 
