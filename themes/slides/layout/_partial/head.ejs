@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/reveal.js/dist/reset.css">
 <link rel="stylesheet" href="/reveal.js/dist/reveal.css">
 <link rel="stylesheet" href="/reveal.js/dist/theme/<%= page.theme %>.css">
-<link rel="stylesheet" href="/reveal.js/lib/css/monokai.css">
+<% if (page.highlight) {%><link rel="stylesheet" href="/reveal.js/lib/css/<%- page.highlight %>"><%}else{%><link rel="stylesheet" href="/reveal.js/lib/css/monokai.css"><%}%>
 <%}%>
 
 <% if (page.head) {%>

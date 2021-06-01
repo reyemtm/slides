@@ -24,7 +24,7 @@ css: >-
     font-weight: 600;
   }
 
-  code {
+  code, table {
     font-size: smaller;
   }
 
@@ -39,19 +39,20 @@ css: >-
   }
 
 center: false
+highlight: xcode.css
 ---
 
 # DIY Raster Tiles with QGIS & GDAL
 
 ---
 
-# Goal
+## Goal
 
-> Use open source tools to create a file or set of files to serve custom imagery to clients over the internet.
+> Use open source tools to generate web map tiles from an orthomosaic.
 
 ---
 
-## Prerequisites
+### Prerequisites
 
 *For those wanting to follow along.*
 
@@ -62,32 +63,31 @@ center: false
 
 ---
 
-## *Note
+### Note on Projections
 
-> Esri tools were used to convert the source MrSID files to an open TIFF format - with no pyramids and JPG YCbCr compression.*
+> Esri tools may need to be used to transform the data from NAD83 HARN (OGRIP Imagery) to Web Mercator using a high accuracy transformation.*
 
-``*QGIS did not render the pyramids in the native MrSID format as clean as Arc* or gdal2tiles.``
+*A custom `proj` string could be used as well, ([getbounds.com/blog/rtk-to-wgs84/](https://www.getbounds.com/blog/rtk-to-wgs84/)).
 
 ---
 
-## Pre-processing
-
-*No Pyramids*
+### Pre-processing
 
 **Raw TIFF Files (ArcGIS Pro)**
 
 1. Created a Mosaic of TIFF files
-2. Project Raster to EPSG:3735 LZW TIFF
-3. Project Raster to EPSG:3857 JPG YCbCR TIFF
+2. Projected Raster to EPSG:3735 LZW TIFF
+3. Projected Raster to EPSG:3857 JPG YCbCR TIFF
 
-**OGRIP MrSID Files (ArcMap)**
+**OGRIP MrSID Files (QGIS)**
 
 1. Copy Raster to EPSG:3857 JPG YCbCR
+  - (NULL Transformation)
 
 ---
 
 
-## Overview
+### Overview
 
 - Overview of raster tiles
 - Discussion of **Why?**
@@ -100,7 +100,15 @@ center: false
 
 ---
 
-## Why not Commerical (Satellite) Imagery?
+### The world is (not) a square.
+
+![zoom-levels](zoom-levels.png)
+
+256x256 or 512x512 pixels
+
+---
+
+### Why not Commerical (Satellite) Imagery?
 
 - No control over Projections/Transformations
 - Commercial Imagery is Outdated
@@ -138,56 +146,62 @@ center: false
 - Supplement the tiles with newer imagery
 - Any image can be tiled, not just ortho imagery
 - Raw Tiles can be hosted anywhere
-- Tools are free and open source*
-
-``*Except for the Esri tools used to convert the source MrSID file``
+- Tools are free and open source
 
 ---
 
-### One Countywide Aerial
+### Warning
+
+> Live Coding Ahead!!
+
+---
+
+### Let's Explore Some Data
+
+<pre><code data-trim data-noescape data-python>gdalinfo Franklin_rgb_100x.sid
+</code></pre>
+
+---
+
+### Key Components
+
+- NODATA Value
+- Projection
+- Compression
+- Pyramids
+
+---
+
+### Raster Tiling Tools
+
+- ArcGIS Image Cache
+- QGIS Generate xyz tiles (mbtiles)
+- gdal2tiles
+
+---
+
+### Hosting Options
+
+- ArcGIS Image Cache 
+  - ArcGIS Server/AGOL
+- mbtiles file
+  - mbtileserver
+- XYZ Folder Tree
+  - **Any web host**
+
+---
+
+
+### One Countywide Aerial (z21)
 
 |Source|Files|Format|Size|
 |-|-:|-|-:|
 |Raw Tiff|39,985|TIFF|1150 GB|
 |Orthomosaic|2|TIFF/JPG|62 GB|
-|ArcGIS Cache|1,316|Mixed|101 GB|
+|ArcGIS Cache|1,316|PNG,JPG|101 GB|
 |Raster Tiles|11,511,665|PNG|851 GB|
-|Raster Tiles|11,511,665|WEBP|200 GB|
-|mbtiles|1|SQLITE|?|
-
----
-
-#### One County Tiled to Zoom Level 16
-
-filetree
-
-1.54 GB 14K Files
-
-mbtiles
-
-1.62 GB 1 file
-
-#### Zoom Level 21
-
----
-
-The world is (not) a square.
-
-256x256 
-
-or
-
-512x512
-
-for high res screens (twice the amount of pixels in the same amount of space)
-
----
-
-gdal-info
-
-XYZ map tiles what are they brief explanation
-
-![zoom-levels](zoom-levels.png)
+|Raster Tiles|11,511,665|**WEBP**|200 GB|
+|mbtiles|1|SQLITE|1150 GB|
 
 ---
 
@@ -226,10 +240,6 @@ output format
 - png
 - jpg
 - webp
-
----
-
-> Warning Live Code Ahead!!
 
 ---
 
