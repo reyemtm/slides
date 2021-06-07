@@ -46,6 +46,18 @@ highlight: xcode.css
 
 ---
 
+## FYI
+
+> This talk is not about Machine Learning or AI or any fancy new technology.
+
+---
+
+## Rasters & Raster Tiles
+
+> High Resolution Orthoimagery is one of the foundations of a Modern GIS.
+
+---
+
 ## Goal
 
 > Use open source tools to generate web map tiles from an orthomosaic.
@@ -65,9 +77,159 @@ highlight: xcode.css
 
 ### Note on Projections
 
-> Esri tools may need to be used to transform the data from NAD83 HARN (OGRIP Imagery) to Web Mercator using a high accuracy transformation.*
+**NAD83 HARN <> NAD83 <> WGS84**
 
-*A custom `proj` string could be used as well, ([getbounds.com/blog/rtk-to-wgs84/](https://www.getbounds.com/blog/rtk-to-wgs84/)).
+EPSG.io
+
+<pre>
+  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs 
+  </code>
+</pre>
+
+SpatialReference.org
+
+<pre>
+  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+  </code>
+</pre>
+
+---
+
+## Null Transformation
+
+#### +datum=NAD83
+
+#### +towgs84=0,0,0,0,0,0,0
+
+---
+
+## Esri ITRF00 
+
+---
+## Why
+
+- You don't want to tie up your production machine for a week tiling raster data 
+- You want to learn more about how web maps work
+- You don't have access to commercial software for publishing raster tiles to the web
+- You want to plan a mission to Mars
+
+---
+
+## Deployment
+
+> Since the end product is just a folder tree, the raster tiles can be deployed on any static web host or CDN.
+
+---
+
+### Local Deployment
+
+- 1 County Raster Tiles ~ 100 GB - 1 TB
+- 10 TB HDD ~ $250
+
+### Cloud Storage 
+
+- Amazon S3, Digital Ocean Spaces...
+- keycdn, Netlify (for small projects)
+
+---
+
+## Carta do Mundo de Mercator (1569)
+
+> The world is (not) flat.
+
+![alt=mercator-map](1024px-Mercator_1569.png)
+
+[Wikipedia Link](https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png)
+---
+
+### Legend 3
+
+> "Firstly, to spread on a plane the surface of the sphere in such a way that the positions of places shall correspond on all sides with each other, both in so far as true direction and distance are concerned and as correct longitudes and latitudes..."
+
+> "...the limitations of ancient geography be not unknown and that the honour which is due to past centuries be given to them." 
+
+~ Gerardus Mercator, 1569
+
+---
+
+## Mercator Distortions
+
+![alt=map showing true size of continents](mercator-true-size.png)
+
+[True Size](https://thetruesize.com/)
+
+---
+
+## "Slippy" Web Map Basics
+
+- Started with Google, now standardized
+- Made up of 256x256 raster or vector tiles
+- World Tile Coverage = 2^2z
+
+![](zoom-levels.png)
+
+Local Tiles = # @ Next Zoom Level ~ # at Prev Zoom * 4 
+
+---
+
+## Mars Mission Planning
+
+![alt=Mars Mission Planning](mmgis-snapshot.png)
+
+[Mars Rover Location Map](https://mars.nasa.gov/maps/)
+
+---
+
+## Overview
+
+- Look at our sample rasters
+- Inspect the rasters with gdalinfo
+
+> Remember to transform your data or be willing to live with the results
+
+- Run the gdal2tiles tool
+- Images do not need to be georeferenced
+
+---
+
+
+
+256x256 
+
+or
+
+512x512
+
+for high res screens (twice the amount of pixels in the same amount of space)
+
+---
+
+gdal-info
+
+XYZ map tiles what are they brief explanation
+
+![](/images/zoom-levels.png)
+
+[See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
+
+Colorizing in QGIS
+NODATA
+
+Clip and project the raster
+Cut the raster into png XYZ image tiles
+Convert the png images to webp
+Directly copy the files to the server via USB
+Each additional zoom inceases the total tiles by previous zoom number of tiles * 2
+Optionally convert the directory of png image tiles to the webp format.
+
+
+
+---
+
+//TODO turn this into notes?
+The most recent orthomosaics from OGRIP are in the NAD83 HARN projection. The default GDAL projection to WGS84 is null, so keep this in mind, especially if you want to maintian high accuracy for the web map tiles. For most of the examples below, Esri tools were used to transform the data from NAD83 HARN Ohio to Web Mercator, due to not being able to replicate the NAD83 to HARN Ohio Esri transformation using open source tools.
+
+*A custom `proj` string can be used go from NAD83 to WGS84, ([getbounds.com/blog/rtk-to-wgs84/](https://www.getbounds.com/blog/rtk-to-wgs84/)).
 
 ---
 
@@ -119,25 +281,25 @@ highlight: xcode.css
 
 ### Bing Maps (~2016)
 
-![](medcenter-bing.png)
+![](img/medcenter-bing.png)
 
 ---
 
 ### Google Maps (~2018)
 
-![](medcenter-google.png)
+![](img/medcenter-google.png)
 
 ---
 
 ### Esri/Mapbox (Maxar ~2019)
 
-![](medcenter-mapbox.png)
+![](img/medcenter-mapbox.png)
 
 ---
 
 ### Local 2020 Aerial
 
-![](medcenter-local.png)
+![](img/medcenter-local.png)
 
 ---
 
