@@ -1,22 +1,24 @@
 ---
 layout: slides-reveal
-title: DIY Raster Tiles with QGIS & GDAL
+title: Raster Tiles with QGIS & GDAL
 theme: therepublic
 markdown: true
 date: 2021-05-11
 tags: slides
-transition: fade
+transition: none
 css: >-
   .reveal .slide-background {
     background-color: #121212;
-    background-color: #fff;
+
   }
   h1 {
     text-align: inherit;
   }
   .reveal .slides {
+    color: #fff;
     max-height: calc(100% - 6rem);
     overflow: hidden;
+    text-align: left;
   }
 
   *, .reveal {
@@ -24,6 +26,7 @@ css: >-
   }
   
   .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    color: #fff;
     font-family: "Kanit", monospace;
     font-weight: 600;
     text-transform: none
@@ -35,26 +38,27 @@ css: >-
 
   .reveal blockquote {
     font-family: "Galaxy";
-    background: hsl(349deg 86% 95%);
+  /*background: hsl(349deg 86% 95%);*/
     border-radius: 5px;
     padding: 2rem;
-  }
-
-  .reveal blockquote {
-    /*font-family: "Bungee Shade";*/
+    text-align: center;
     font-style: normal;
     font-size: 1.5em;
 
   }
 
-  .reveal blockquote, strong, .controls-arrow {
+  .reveal blockquote, .controls-arrow {
     color: crimson;
-    color: rgb(187,36,50);
+    color: #FFF92F
   }
 
   .reveal em {
-    color: rgb(35,34,131);
+    color: #FFF92F;
     font-style: normal
+  }
+
+  .reveal strong {
+    color: crimson;
   }
   /*red - rgb(187,36,50)
   blue/[urple - rgb(35,34,131)
@@ -63,36 +67,34 @@ css: >-
   yellow - FFF92F*/
 
   .reveal section img, .reveal video, .reveal iframe {
-    margin: 0;
-    max-width: 75%;
-    max-height: 75%;
+    margin: 0 auto;
+    max-width: 85%;
+    max-height: 85%;
+    text-align: center;
   }
-
+  .reveal code:not(.hljs) {
+    color: #121212;
+    filter: invert(1);
+  }
+  .reveal pre {
+    width: 100%;
+  }
 center: false
-highlight: xcode.css
+highlight: monokai.css
 ---
 
-# DIY Raster Tiles with QGIS & GDAL
+## DIY Raster Tiles with QGIS & GDAL
 
----
+*Using open source tools to generate web map tiles from an orthomosaic.*
 
-> This talk is not about Machine Learning or AI or any fancy new technology.
+<br>
+Malcolm Meyer
 
----
-
-# Rasters & Raster Tiles
-
----
-
-> High Resolution Orthoimagery is one of the foundations of a Modern GIS
+Ohio GIS Conference 2021
 
 ---
 
-# Goal
-
----
-
-> Use open source tools to generate web map tiles from an orthomosaic.
+## *High Resolution Orthoimagery is one of the foundations of a Modern GIS.*
 
 ---
 
@@ -101,19 +103,20 @@ highlight: xcode.css
 - You don't want to tie up your production machine for a week tiling raster data 
 - You want to learn more about how web maps work
 - You don't have access to commercial software for publishing raster tiles to the web
+- Your can't use external web services due to security, firewalls, etc.
 - You want to plan a mission to Mars
-
----
-
-![](img/mmgis-snapshot.png)
-
-[MMGIS](https://mars.nasa.gov/maps/)
 
 ---
 
 ## Deployment
 
-> The output can be deployed on any static web host or CDN*
+### *The output can be deployed on any static web host or CDN**
+
+---
+
+## Tools are *Open Source*
+
+[![alt=image of mars](img/mmgis-snapshot.png)](https://mars.nasa.gov/maps/)
 
 ---
 
@@ -130,9 +133,19 @@ highlight: xcode.css
 
 ---
 
+```
+gdalinfo raster.tif
+```
+gdalsrsinfo -o proj4 g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
+gdalinfo g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
+
+[https://gdal.org/programs/gdalsrsinfo.html](https://gdal.org/programs/gdalsrsinfo.html)
+[https://gdal.org/programs/gdalinfo.html](https://gdal.org/programs/gdalinfo.html)
+---
+
 ### Note on Projections
 
-**NAD83 HARN < > NAD83 < > WGS84**
+*NAD83 HARN < > NAD83 < > WGS84*
 
 EPSG.io ([skip ahead](./#/15))
 
@@ -152,9 +165,7 @@ SpatialReference.org
 
 #### Carta do Mundo de Mercator (1569)
 
-![](img/1024px-Mercator_1569.png)
-
-[Original Image](https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png)
+[![alt=Carta do Mundo de Mercator 1569](img/1024px-Mercator_1569.png)]((https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png))
 
 ---
 
@@ -189,7 +200,7 @@ SpatialReference.org
 
 ---
 
-## **Null Transformation**
+## *Null Transformation*
 
 <pre>
   <code>
@@ -197,7 +208,7 @@ SpatialReference.org
   </code>
 </pre>
 
-#### *Esri ITRF00 (Default NAD83 <> WGS84)*
+#### **Esri ITRF00 (Default NAD83 <> WGS84)**
 
 <pre>
   <code>
@@ -229,9 +240,32 @@ Replacement for the default NAD83 projection definition in GDAL.
 
 ---
 
-### Local Deployment
+## Steps
 
-- 1 County Raster Tiles ~ 100 GB - 1 TB
+1. Transform the raster using the new proj4 string.
+2. Examine the raster in QGIS.
+3. Run gdal2tiles and test the output.
+4. Run Generate XYZ Tiles (mbtiles) in QGIS.
+5. Serve mbtiles file with mbtileserver.
+
+---
+
+## A Note on File Size
+
+One Countywide Aerial (z21)
+
+|Source|Files|Format|Size|
+|-|-:|-|-:|
+|Raw Tiff|39,985|TIFF|1150 GB|
+|Orthomosaic|2|TIFF/JPG|62 GB|
+|ArcGIS Cache|1,316|PNG,JPG|101 GB|
+|Raster Tiles|11,511,665|PNG|851 GB|
+|Raster Tiles|11,511,665|**WEBP**|200 GB|
+|mbtiles|1|SQLITE/PNG|833 GB|
+|mbtiles|1|SQLITE/JPG|200 GB|
+
+---
+
 - 10 TB HDD ~ $250
 
 ### Cloud Storage 
@@ -415,19 +449,6 @@ The most recent orthomosaics from OGRIP are in the NAD83 HARN projection. The de
 ---
 
 
-### One Countywide Aerial (z21)
-
-|Source|Files|Format|Size|
-|-|-:|-|-:|
-|Raw Tiff|39,985|TIFF|1150 GB|
-|Orthomosaic|2|TIFF/JPG|62 GB|
-|ArcGIS Cache|1,316|PNG,JPG|101 GB|
-|Raster Tiles|11,511,665|PNG|851 GB|
-|Raster Tiles|11,511,665|**WEBP**|200 GB|
-|mbtiles|1|SQLITE|1150 GB|
-
----
-
 [See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
 
 Colorizing in QGIS
@@ -463,10 +484,6 @@ output format
 - png
 - jpg
 - webp
-
----
-
-> Warning Live Code Ahead!!
 
 ---
 

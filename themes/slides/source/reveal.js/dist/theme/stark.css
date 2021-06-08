@@ -198,7 +198,7 @@ h1, h6 {
   white-space: pre-wrap;
 }
 
-.reveal code {
+.reveal code:not(.hljs) {
   font-family: monospace;
   text-transform: none;
   background: #f8f8f8;
@@ -206,7 +206,7 @@ h1, h6 {
   padding: 0 0.1em;
 }
 
-.reveal pre code {
+.reveal pre code:not(.hljs) {
   display: block;
   padding: 5px;
   overflow: auto;

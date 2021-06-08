@@ -38,6 +38,7 @@
 <script src="/reveal.js/plugin/highlight/highlight.js"></script>
 <script>
   Reveal.initialize({
+    backgroundTransition: '<% if (page.transition) {%><%= page.transition %><%} else {%>fade<%}%>',
     transition: '<% if (page.transition) {%><%= page.transition %><%} else {%>fade<%}%>',
     center: <% if (page.center === false) {%><%- page.center %><%} else {%>true<%}%>,
     hash: true,
