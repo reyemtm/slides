@@ -1,12 +1,16 @@
 ---
 layout: slides-reveal
 title: DIY Raster Tiles with QGIS & GDAL
-theme: stark
+theme: therepublic
 markdown: true
 date: 2021-05-11
 tags: slides
 transition: fade
 css: >-
+  .reveal .slide-background {
+    background-color: #121212;
+    background-color: #fff;
+  }
   h1 {
     text-align: inherit;
   }
@@ -20,8 +24,9 @@ css: >-
   }
   
   .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-    font-family: "Inconsolata", monospace;
+    font-family: "Kanit", monospace;
     font-weight: 600;
+    text-transform: none
   }
 
   code, table {
@@ -29,13 +34,38 @@ css: >-
   }
 
   .reveal blockquote {
+    font-family: "Galaxy";
     background: hsl(349deg 86% 95%);
     border-radius: 5px;
     padding: 2rem;
   }
 
-  .reveal blockquote, strong, .controls-arrow, em {
+  .reveal blockquote {
+    /*font-family: "Bungee Shade";*/
+    font-style: normal;
+    font-size: 1.5em;
+
+  }
+
+  .reveal blockquote, strong, .controls-arrow {
     color: crimson;
+    color: rgb(187,36,50);
+  }
+
+  .reveal em {
+    color: rgb(35,34,131);
+    font-style: normal
+  }
+  /*red - rgb(187,36,50)
+  blue/[urple - rgb(35,34,131)
+  light blue - rgb(212,224,248)
+  darkgreen - rgb(14,75,42)
+  yellow - FFF92F*/
+
+  .reveal section img, .reveal video, .reveal iframe {
+    margin: 0;
+    max-width: 75%;
+    max-height: 75%;
   }
 
 center: false
@@ -46,40 +76,65 @@ highlight: xcode.css
 
 ---
 
-## FYI
-
 > This talk is not about Machine Learning or AI or any fancy new technology.
 
 ---
 
-## Rasters & Raster Tiles
-
-> High Resolution Orthoimagery is one of the foundations of a Modern GIS.
+# Rasters & Raster Tiles
 
 ---
 
-## Goal
+> High Resolution Orthoimagery is one of the foundations of a Modern GIS
+
+---
+
+# Goal
+
+---
 
 > Use open source tools to generate web map tiles from an orthomosaic.
 
 ---
 
-### Prerequisites
+## Why
+
+- You don't want to tie up your production machine for a week tiling raster data 
+- You want to learn more about how web maps work
+- You don't have access to commercial software for publishing raster tiles to the web
+- You want to plan a mission to Mars
+
+---
+
+![](img/mmgis-snapshot.png)
+
+[MMGIS](https://mars.nasa.gov/maps/)
+
+---
+
+## Deployment
+
+> The output can be deployed on any static web host or CDN*
+
+---
+
+## Prerequisites
 
 *For those wanting to follow along.*
 
 - Have QGIS 3.x installed and working
 - Have gdal installed and working
-  - ``gdal-info --version``
+  - OSGeo4W Shell
+  - ``gdalinfo --version``
+  - ``GDAL 3.1.4, released 2020/10/20``
 - Obtain a copy of the sample rasters
 
 ---
 
 ### Note on Projections
 
-**NAD83 HARN <> NAD83 <> WGS84**
+**NAD83 HARN < > NAD83 < > WGS84**
 
-EPSG.io
+EPSG.io ([skip ahead](./#/15))
 
 <pre>
   <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs 
@@ -95,29 +150,82 @@ SpatialReference.org
 
 ---
 
-## Null Transformation
+#### Carta do Mundo de Mercator (1569)
 
-#### +datum=NAD83
+![](img/1024px-Mercator_1569.png)
 
-#### +towgs84=0,0,0,0,0,0,0
-
----
-
-## Esri ITRF00 
-
----
-## Why
-
-- You don't want to tie up your production machine for a week tiling raster data 
-- You want to learn more about how web maps work
-- You don't have access to commercial software for publishing raster tiles to the web
-- You want to plan a mission to Mars
+[Original Image](https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png)
 
 ---
 
-## Deployment
+## The 'Mercator' Projection
 
-> Since the end product is just a folder tree, the raster tiles can be deployed on any static web host or CDN.
+*Firstly, to spread on a plane the surface of the sphere in such a way that the positions of places shall correspond on all sides with each other, both in so far as true direction and distance are concerned and as correct longitudes and latitudes...*
+
+---
+
+## On Cartography
+
+*...the limitations of ancient geography be not unknown and that the honour which is due to past centuries be given to them.*
+
+~ Gerardus Mercator, 1569
+
+---
+
+## Mercator Distortions
+
+![alt=map showing true size of continents](img/mercator-true-size.png)
+
+[True Size](https://thetruesize.com/)
+
+---
+
+## "Slippy" Web Map Basics
+
+![](img/zoom-levels.png)
+
+- Made up of 256x256 raster or vector tiles
+- Each zoom level is a directory, each column is a subdirectory, and each tile is a file
+
+---
+
+## **Null Transformation**
+
+<pre>
+  <code>
+    +datum=NAD83 | +towgs84=0,0,0,0,0,0,0
+  </code>
+</pre>
+
+#### *Esri ITRF00 (Default NAD83 <> WGS84)*
+
+<pre>
+  <code>
+    0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062
+  </code>
+</pre>
+
+[proj definitions](#/9)
+---
+
+## Proj4 String
+
+Replacement for the default NAD83 projection definition in GDAL.
+
+<pre>
+  <code>
+    +proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.73333333333 \
+    +x_0=600000 +y_0=0 +ellps=GRS80 \
+    +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 \
+    +units=us-ft +no_defs
+  </code>
+</pre>
+
+---
+
+> Warning!
+
+> Live Code Ahead!
 
 ---
 
@@ -130,53 +238,6 @@ SpatialReference.org
 
 - Amazon S3, Digital Ocean Spaces...
 - keycdn, Netlify (for small projects)
-
----
-
-## Carta do Mundo de Mercator (1569)
-
-> The world is (not) flat.
-
-![alt=mercator-map](1024px-Mercator_1569.png)
-
-[Wikipedia Link](https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png)
----
-
-### Legend 3
-
-> "Firstly, to spread on a plane the surface of the sphere in such a way that the positions of places shall correspond on all sides with each other, both in so far as true direction and distance are concerned and as correct longitudes and latitudes..."
-
-> "...the limitations of ancient geography be not unknown and that the honour which is due to past centuries be given to them." 
-
-~ Gerardus Mercator, 1569
-
----
-
-## Mercator Distortions
-
-![alt=map showing true size of continents](mercator-true-size.png)
-
-[True Size](https://thetruesize.com/)
-
----
-
-## "Slippy" Web Map Basics
-
-- Started with Google, now standardized
-- Made up of 256x256 raster or vector tiles
-- World Tile Coverage = 2^2z
-
-![](zoom-levels.png)
-
-Local Tiles = # @ Next Zoom Level ~ # at Prev Zoom * 4 
-
----
-
-## Mars Mission Planning
-
-![alt=Mars Mission Planning](mmgis-snapshot.png)
-
-[Mars Rover Location Map](https://mars.nasa.gov/maps/)
 
 ---
 
@@ -405,6 +466,10 @@ output format
 
 ---
 
+> Warning Live Code Ahead!!
+
+---
+
 QGIS Built-in Converter
 
 
@@ -439,6 +504,7 @@ python gdal2tiles.py -e -z 0-21 -v --xyz --processes=ALL original_tiff_file dest
 
 #### References
 
+- https://www.researchgate.net/publication/321064657_Web_mercator_and_raster_tile_maps_two_cornerstones_of_online_map_service_providers
 - https://blog.mastermaps.com/2008/03/generating-map-tiles-with-gdal2tiles.html
 - http://build-failed.blogspot.com/2012/11/zoomable-image-with-leaflet.html
 - https://alastaira.wordpress.com/2011/07/11/maptiler-gdal2tiles-and-raster-resampling/
@@ -447,3 +513,4 @@ python gdal2tiles.py -e -z 0-21 -v --xyz --processes=ALL original_tiff_file dest
 - https://github.com/ecometrica/gdal2mbtiles
 - http://emapr.ceoas.oregonstate.edu/pages/education/how_to/how_to_tws.html
 - https://developers.google.com/kml/articles/raster
+- http://www.perrygeo.com/lazy-raster-processing-with-gdal-vrts.html
