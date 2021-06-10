@@ -1,6 +1,5 @@
 # Site
 title: Slides
-subtitle:
 description: >- 
   Presentations, talks, and workshops on data visualization, open source geospatial tools, technology and the occasional off-topic rant.
 keywords: ["gis", "blog", "geospatial", "vector tiles", "mapbox", "leaflet", "web maps", "dataviz"]
@@ -47,9 +46,11 @@ pretty_urls:
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
 # order_by: Posts order. (Order by date descending by default)
-index_generator:
-  per_page: 100
-  order_by: -date
+#index_generator:
+##  path: ''
+ # per_page: 100
+#  order_by: -date
+#  pagination_dir: page
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -80,7 +81,6 @@ deploy:
   type:
 
 include: 
- - slides/**/*.*
  - _headers
 
 #feed hexo-generator-feed

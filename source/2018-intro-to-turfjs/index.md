@@ -1,5 +1,5 @@
 ---
-title: Turf JS
+title: Introduction to Turf JS
 subtitle: Geospatial Analysis for the Browser, Desktop & Server
 layout: slides-big
 theme: light
