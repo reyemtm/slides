@@ -32,8 +32,9 @@ css: >-
     text-transform: none
   }
 
-  code, table {
+  .reveal code, .reveal table {
     font-size: smaller;
+    margin: 0;
   }
 
   .reveal blockquote {
@@ -98,7 +99,40 @@ Ohio GIS Conference 2021
 
 ---
 
-## Why
+### Why not Commerical *(Satellite)* Imagery?
+
+- No control over Projections/Transformations
+- Commercial Imagery is Outdated
+- Cannot be supplemented with UAV Mosaics
+- Low Resolution [(15cm Sat Coming Soon!)](https://www.geospatialworld.net/news/radar-satellite-startup-umbra-plans-to-capture-imagery-with-15-cm-resolution/)
+
+---
+
+### Bing Maps (~2016)
+
+![](img/medcenter-bing.png)
+
+---
+
+### Google Maps (~2018)
+
+![](img/medcenter-google.png)
+
+---
+
+### Esri/Mapbox (Maxar ~2019)
+
+![](img/medcenter-mapbox.png)
+
+---
+
+### *Local 2020 Aerial*
+
+![](img/medcenter-local.png)
+
+---
+
+## Why *DIY* Tiles
 
 - You don't want to tie up your production machine for a week tiling raster data 
 - You want to learn more about how web maps work
@@ -108,9 +142,19 @@ Ohio GIS Conference 2021
 
 ---
 
-## Deployment
+## Even More Reasons
+
+![arcgis cache error](img/cache_error.png)
+
+---
+
+## Simple Deployment
 
 ### *The output can be deployed on any static web host or CDN**
+
+<br>
+
+*In some instances it will be advantageous to use a single mbtiles file (sqlite db) instead of a directory of tiles.
 
 ---
 
@@ -120,46 +164,13 @@ Ohio GIS Conference 2021
 
 ---
 
-## Prerequisites
+## Raster Tile Basics
 
-*For those wanting to follow along.*
+*Maps are usually in Web Mercator EPSG:3857*
 
-- Have QGIS 3.x installed and working
-- Have gdal installed and working
-  - OSGeo4W Shell
-  - ``gdalinfo --version``
-  - ``GDAL 3.1.4, released 2020/10/20``
-- Obtain a copy of the sample rasters
+![](img/zoom-levels.png)
 
----
-
-```
-gdalinfo raster.tif
-```
-gdalsrsinfo -o proj4 g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
-gdalinfo g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
-
-[https://gdal.org/programs/gdalsrsinfo.html](https://gdal.org/programs/gdalsrsinfo.html)
-[https://gdal.org/programs/gdalinfo.html](https://gdal.org/programs/gdalinfo.html)
----
-
-### Note on Projections
-
-*NAD83 HARN < > NAD83 < > WGS84*
-
-EPSG.io ([skip ahead](./#/15))
-
-<pre>
-  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs 
-  </code>
-</pre>
-
-SpatialReference.org
-
-<pre>
-  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
-  </code>
-</pre>
+Each zoom level is a directory, each column is a subdirectory, and each tile is a file.
 
 ---
 
@@ -191,68 +202,46 @@ SpatialReference.org
 
 ---
 
-## "Slippy" Web Map Basics
+### Note on Transformations
 
-![](img/zoom-levels.png)
+*NAD83 HARN < > NAD83 < > WGS84*
 
-- Made up of 256x256 raster or vector tiles
-- Each zoom level is a directory, each column is a subdirectory, and each tile is a file
-
----
-
-## *Null Transformation*
+EPSG.io ([skip ahead](./#/18))
 
 <pre>
-  <code>
-    +datum=NAD83 | +towgs84=0,0,0,0,0,0,0
+  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs 
   </code>
 </pre>
 
-#### **Esri ITRF00 (Default NAD83 <> WGS84)**
+SpatialReference.org
 
 <pre>
-  <code>
-    0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062
-  </code>
-</pre>
-
-[proj definitions](#/9)
----
-
-## Proj4 String
-
-Replacement for the default NAD83 projection definition in GDAL.
-
-<pre>
-  <code>
-    +proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.73333333333 \
-    +x_0=600000 +y_0=0 +ellps=GRS80 \
-    +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 \
-    +units=us-ft +no_defs
+  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
   </code>
 </pre>
 
 ---
 
-> Warning!
+## Raster Tiling Tools
 
-> Live Code Ahead!
-
----
-
-## Steps
-
-1. Transform the raster using the new proj4 string.
-2. Examine the raster in QGIS.
-3. Run gdal2tiles and test the output.
-4. Run Generate XYZ Tiles (mbtiles) in QGIS.
-5. Serve mbtiles file with mbtileserver.
+- ArcGIS Image Cache
+- gdal2tiles
+- QGIS Generate xyz tiles (mbtiles)
 
 ---
 
-## A Note on File Size
+## Hosting Options
 
-One Countywide Aerial (z21)
+- ArcGIS Image Cache 
+  - ArcGIS Server/AGOL
+- XYZ Folder Tree
+  - **Any web host**
+- mbtiles file
+  - mbtileserver, many others
+
+---
+
+### A Note on File Size (z21)
 
 |Source|Files|Format|Size|
 |-|-:|-|-:|
@@ -261,41 +250,43 @@ One Countywide Aerial (z21)
 |ArcGIS Cache|1,316|PNG,JPG|101 GB|
 |Raster Tiles|11,511,665|PNG|851 GB|
 |Raster Tiles|11,511,665|**WEBP**|200 GB|
-|mbtiles|1|SQLITE/PNG|833 GB|
-|mbtiles|1|SQLITE/JPG|200 GB|
+|Raster Tiles|11,511,665|JPG|120 GB|
+|mbtiles|1|SQLITE/JPG|115 GB|
 
 ---
 
-- 10 TB HDD ~ $250
-
-### Cloud Storage 
-
-- Amazon S3, Digital Ocean Spaces...
-- keycdn, Netlify (for small projects)
+# BREAK
 
 ---
 
-## Overview
+## Let's Get <strong>Coding</strong>
 
-- Look at our sample rasters
-- Inspect the rasters with gdalinfo
+*For those wanting to follow along.*
 
-> Remember to transform your data or be willing to live with the results
-
-- Run the gdal2tiles tool
-- Images do not need to be georeferenced
+- Have QGIS 3.x installed and working
+- Have gdal installed and working
+  - Open OSGeo4W Shell
+  - Type ``gdalinfo --version``
+  - Return ~ ``GDAL 3.1.4, released 2020/10/20``
+- Obtain a copy of the sample rasters
 
 ---
 
+## The Process
 
+1.Explore raster metadata with gdalinfo.
 
-256x256 
+2.Verify the accuracy of the data in QGIS with GPS ground truth data.
 
-or
+3.Virtually transform the raster with gdalwarp.
 
-512x512
+4.Examine the output in QGIS.
 
-for high res screens (twice the amount of pixels in the same amount of space)
+5.Run gdal2tiles and test the output.
+
+6.Run Generate XYZ Tiles (mbtiles) in QGIS.
+
+7.Serve mbtiles file with mbtileserver.
 
 ---
 
@@ -317,7 +308,53 @@ Directly copy the files to the server via USB
 Each additional zoom inceases the total tiles by previous zoom number of tiles * 2
 Optionally convert the directory of png image tiles to the webp format.
 
+---
 
+## *Null Transformation*
+
+<pre>
+  <code>
+    +datum=NAD83 | +towgs84=0,0,0,0,0,0,0
+  </code>
+</pre>
+
+#### **Esri ITRF00 (Default NAD83 <> WGS84)**
+
+<pre>
+  <code>
+    0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062
+  </code>
+</pre>
+
+[proj definitions](#/12)
+---
+
+## Proj4 String
+
+Replacement for the default NAD83 projection definition in GDAL.
+
+<pre>
+  <code>
+    +proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.73333333333 \
+    +x_0=600000 +y_0=0 +ellps=GRS80 \
+    +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 \
+    +units=us-ft +no_defs
+  </code>
+</pre>
+
+---
+
+run gdalwarp project into 3857 - this results into a more crisp image compared to transforming into 4326, not sure Why
+
+``` bash
+
+gdalwarp -t_srs EPSG:3857 -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" -r average -multi -srcnodata 255 -of VRT g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid g:\data\imagery\fairfield\2020\2020_fairfield_3in_3857.vrt
+
+```
+
+.vrt is a supported Raster format type for Esri applications. See https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
+
+*This resulting virtual raster can be used directly in ArcGIS Pro to create a Map Server Tile Cache instead of having to first export the original raster into WGS84 or Web Mercator.*
 
 ---
 
@@ -343,73 +380,10 @@ The most recent orthomosaics from OGRIP are in the NAD83 HARN projection. The de
 
 ---
 
+### mbtileserver
 
-### Overview
-
-- Overview of raster tiles
-- Discussion of **Why?**
-- Create tiles with GDAL
-- Running in **Production?**
-- Introduction to mbtiles
-- Create mbtiles with QGIS
 - Serve with mbtileserver
  - pre-built windows exe file
-
----
-
-### The world is (not) a square.
-
-![zoom-levels](zoom-levels.png)
-
-256x256 or 512x512 pixels
-
----
-
-### Why not Commerical (Satellite) Imagery?
-
-- No control over Projections/Transformations
-- Commercial Imagery is Outdated
-- Cannot be supplemented with UAV Mosaics
-- Low Resolution [(15cm Sat Coming Soon!)](https://www.geospatialworld.net/news/radar-satellite-startup-umbra-plans-to-capture-imagery-with-15-cm-resolution/)
-
----
-
-### Bing Maps (~2016)
-
-![](img/medcenter-bing.png)
-
----
-
-### Google Maps (~2018)
-
-![](img/medcenter-google.png)
-
----
-
-### Esri/Mapbox (Maxar ~2019)
-
-![](img/medcenter-mapbox.png)
-
----
-
-### Local 2020 Aerial
-
-![](img/medcenter-local.png)
-
----
-
-### Additional Benefits
-
-- Supplement the tiles with newer imagery
-- Any image can be tiled, not just ortho imagery
-- Raw Tiles can be hosted anywhere
-- Tools are free and open source
-
----
-
-### Warning
-
-> Live Coding Ahead!!
 
 ---
 
@@ -428,26 +402,6 @@ The most recent orthomosaics from OGRIP are in the NAD83 HARN projection. The de
 - Pyramids
 
 ---
-
-### Raster Tiling Tools
-
-- ArcGIS Image Cache
-- QGIS Generate xyz tiles (mbtiles)
-- gdal2tiles
-
----
-
-### Hosting Options
-
-- ArcGIS Image Cache 
-  - ArcGIS Server/AGOL
-- mbtiles file
-  - mbtileserver
-- XYZ Folder Tree
-  - **Any web host**
-
----
-
 
 [See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
 
@@ -519,6 +473,30 @@ python gdal2tiles.py -e -z 0-21 -v --xyz --processes=ALL original_tiff_file dest
 
 ---
 
+### Merging & Updating mbtiles
+
+Using DB Browser (SQLite), run the following SQL command with the destination mbtiles file open.
+
+<pre><code>PRAGMA journal_mode=PERSIST;
+PRAGMA page_size=80000;
+PRAGMA synchronous=OFF;
+ATTACH DATABASE 'c:/path/to/updated_file.mbtiles' AS source;
+REPLACE INTO tiles SELECT * FROM source.tiles;
+</code></pre>
+
+---
+
+```
+gdalinfo raster.tif
+```
+gdalsrsinfo -o proj4 g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
+gdalinfo g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
+
+[https://gdal.org/programs/gdalsrsinfo.html](https://gdal.org/programs/gdalsrsinfo.html)
+[https://gdal.org/programs/gdalinfo.html](https://gdal.org/programs/gdalinfo.html)
+---
+
+
 #### References
 
 - https://www.researchgate.net/publication/321064657_Web_mercator_and_raster_tile_maps_two_cornerstones_of_online_map_service_providers
@@ -531,3 +509,4 @@ python gdal2tiles.py -e -z 0-21 -v --xyz --processes=ALL original_tiff_file dest
 - http://emapr.ceoas.oregonstate.edu/pages/education/how_to/how_to_tws.html
 - https://developers.google.com/kml/articles/raster
 - http://www.perrygeo.com/lazy-raster-processing-with-gdal-vrts.html
+- https://jeromegagnonvoyer.wordpress.com/2015/08/06/merging-multiple-mbtiles-together/
