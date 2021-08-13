@@ -10,3 +10,9 @@ This is a known issue. The Create Map Tile Package tool returns incomplete tiles
 
 Solution or Workaround
 Use the Build Pyramids And Statistics tool to build pyramids and calculate statistics for the raster dataset before using it to create a map tile package.
+
+https://blog.cleverelephant.ca/2015/02/geotiff-compression-for-dummies.html
+
+https://cran.r-project.org/web/packages/slippymath/slippymath.pdf
+
+http://www.liedman.net/tiled-maps/
