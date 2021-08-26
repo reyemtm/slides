@@ -95,6 +95,10 @@ Ohio GIS Conference 2021
 
 ---
 
+# Intro
+
+---
+
 ## *High Resolution Orthoimagery is one of the foundations of a Modern GIS.*
 
 ---
@@ -132,12 +136,12 @@ Ohio GIS Conference 2021
 
 ---
 
-## Why *DIY* Tiles
+## Why FOSS4G *DIY* Tiles
 
-- You don't want to tie up your production machine for a week tiling raster data 
-- You want to learn more about how web maps work
-- You don't have access to commercial software for publishing raster tiles to the web
-- Your can't use external web services due to security, firewalls, etc.
+- No need to tie up your production machine for a week tiling raster data 
+- You get to learn more about how web maps work
+- No need for commercial software to create or publishing raster tiles to the web
+- Full control of the mosaic to tile pipleing
 - You want to plan a mission to Mars
 
 ---
@@ -161,6 +165,10 @@ Ohio GIS Conference 2021
 ## Tools are *Open Source*
 
 [![alt=image of mars](img/mmgis-snapshot.png)](https://mars.nasa.gov/maps/)
+
+---
+
+# Overview of Raster Tiles
 
 ---
 
@@ -204,7 +212,7 @@ Each zoom level is a directory, each column is a subdirectory, and each tile is 
 
 ### Note on Transformations
 
-*NAD83 HARN < > NAD83 < > WGS84*
+*NAD83 < > WGS84*
 
 EPSG.io ([skip ahead](./#/18))
 
@@ -250,8 +258,8 @@ show examples of data transformed and not transformed
 |Source|Files|Format|Size|
 |-|-:|-|-:|
 |Raw Tiff|39,985|TIFF|1150 GB|
-|*Orthomosaic*|4|TIFF/LERC|620 GB|
-|Orthomosaic|2|TIFF/JPG|62 GB|
+|*Esri Export*|4|TIFF/LERC|620 GB|
+|gdal_translate COG|2|TIFF/JPG|82 GB|
 |ArcGIS Cache|1,316|PNG,JPG|101 GB|
 |Raster Tiles|11,511,665|PNG|851 GB|
 |Raster Tiles|11,511,665|**WEBP**|200 GB|
