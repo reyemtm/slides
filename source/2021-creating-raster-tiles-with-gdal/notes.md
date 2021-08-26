@@ -16,3 +16,9 @@ https://blog.cleverelephant.ca/2015/02/geotiff-compression-for-dummies.html
 https://cran.r-project.org/web/packages/slippymath/slippymath.pdf
 
 http://www.liedman.net/tiled-maps/
+
+started at 11:15 100% cpu 1.15 TB tif
+
+JPG compression is about 1/3 the size of LZW compression
+
+Cloud Optimized GeoTiff output from Copy Raster

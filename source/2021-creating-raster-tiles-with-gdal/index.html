@@ -222,6 +222,10 @@ SpatialReference.org
 
 ---
 
+show examples of data transformed and not transformed
+
+---
+
 ## Raster Tiling Tools
 
 - ArcGIS Image Cache
@@ -246,6 +250,7 @@ SpatialReference.org
 |Source|Files|Format|Size|
 |-|-:|-|-:|
 |Raw Tiff|39,985|TIFF|1150 GB|
+|*Orthomosaic*|4|TIFF/LERC|620 GB|
 |Orthomosaic|2|TIFF/JPG|62 GB|
 |ArcGIS Cache|1,316|PNG,JPG|101 GB|
 |Raster Tiles|11,511,665|PNG|851 GB|
@@ -272,11 +277,22 @@ SpatialReference.org
 
 ---
 
+## Image > Tile Pipeline
+
+1. Raw TIFF Mosaic (Provided by Vendor or created in Arc*)
+2. ArcGIS Pro: Copy Raster > LERC with NoData as 255
+  2. This file is temporary and can be deleted once the tiles are created.
+  3. Pyramids are not needed, speeding up creation time. 
+3. QGIS: Generate XYZ Tiles (mbtiles)
+4. Serve with `wmts-server`
+
+---
+
 ## The Process
 
 1.Explore raster metadata with gdalinfo.
 
-2.Verify the accuracy of the data in QGIS with GPS ground truth data.
+2.Verify the accuracy of the data in QGIS with GPS ground truthed data.
 
 3.Virtually transform the raster with gdalwarp.
 
@@ -286,7 +302,7 @@ SpatialReference.org
 
 6.Run Generate XYZ Tiles (mbtiles) in QGIS.
 
-7.Serve mbtiles file with mbtileserver.
+7.Serve mbtiles file with wmts-server.
 
 ---
 
@@ -297,16 +313,6 @@ XYZ map tiles what are they brief explanation
 ![](/images/zoom-levels.png)
 
 [See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
-
-Colorizing in QGIS
-NODATA
-
-Clip and project the raster
-Cut the raster into png XYZ image tiles
-Convert the png images to webp
-Directly copy the files to the server via USB
-Each additional zoom inceases the total tiles by previous zoom number of tiles * 2
-Optionally convert the directory of png image tiles to the webp format.
 
 ---
 
@@ -344,24 +350,17 @@ Replacement for the default NAD83 projection definition in GDAL.
 
 ---
 
-run gdalwarp project into 3857 - this results into a more crisp image compared to transforming into 4326, not sure Why
+`run gdalwarp project into 3857 - this results in a crisper image compared to virtually transforming into 4326`
 
-``` bash
+```bash
 
-gdalwarp -t_srs EPSG:3857 -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" -r average -multi -srcnodata 255 -of VRT g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid g:\data\imagery\fairfield\2020\2020_fairfield_3in_3857.vrt
+gdalwarp -t_srs EPSG:3857 -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" -r average -multi -srcnodata 255 -of VRT input_file.tif output_file.vrt
 
 ```
 
 .vrt is a supported Raster format type for Esri applications. See https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
 
-*This resulting virtual raster can be used directly in ArcGIS Pro to create a Map Server Tile Cache instead of having to first export the original raster into WGS84 or Web Mercator.*
-
----
-
-//TODO turn this into notes?
-The most recent orthomosaics from OGRIP are in the NAD83 HARN projection. The default GDAL projection to WGS84 is null, so keep this in mind, especially if you want to maintian high accuracy for the web map tiles. For most of the examples below, Esri tools were used to transform the data from NAD83 HARN Ohio to Web Mercator, due to not being able to replicate the NAD83 to HARN Ohio Esri transformation using open source tools.
-
-*A custom `proj` string can be used go from NAD83 to WGS84, ([getbounds.com/blog/rtk-to-wgs84/](https://www.getbounds.com/blog/rtk-to-wgs84/)).
+*This resulting virtual raster can be used directly in ArcGIS Pro or QGIS to create a Map Server Tile Cache or mbtiles cache instead of having to first export the original raster into Web Mercator.*
 
 ---
 
@@ -377,13 +376,6 @@ The most recent orthomosaics from OGRIP are in the NAD83 HARN projection. The de
 
 1. Copy Raster to EPSG:3857 JPG YCbCR
   - (NULL Transformation)
-
----
-
-### mbtileserver
-
-- Serve with mbtileserver
- - pre-built windows exe file
 
 ---
 
@@ -483,6 +475,26 @@ PRAGMA synchronous=OFF;
 ATTACH DATABASE 'c:/path/to/updated_file.mbtiles' AS source;
 REPLACE INTO tiles SELECT * FROM source.tiles;
 </code></pre>
+
+---
+
+
+## Raster Tile Servers
+
+Copying millions of small files can take a very long time, however deployment is as simple as pointing a web server to a folder.
+
+Using an mbtiles database and server has a few key advantageous
+
+* The entire file cache is stored in a single file vs millions of small files.
+* Complete control of the image server, allowing things like overzoom to be handled by the server instead of the client
+
+
+### mbtileserver
+
+- mbtileserver
+ - Written in GO, deployed via a windows exe file
+- wmts-server
+ - NodeJS server with WMTS endoints and 3x overzoom
 
 ---
 
