@@ -86,7 +86,7 @@ highlight: monokai.css
 
 ## DIY Raster Tiles with QGIS & GDAL
 
-*Using open source tools to generate web map tiles from an orthomosaic.*
+*Using open source tools to generate orthomosaics and web map tiles from aerial imagery.*
 
 <br>
 Malcolm Meyer
@@ -95,20 +95,38 @@ Ohio GIS Conference 2021
 
 ---
 
-# Intro
+# About Me
+
+- BA in Sociology, MA in International Affairs
+- 10 Years in the Geospatial Sector
+- ❤️❤️❤️
+- ☕ Coffee, 🌾 Gardening, 🎸 Music 
+- ❤️❤️❤️
+
+_note:
+My inital exposure to open source came from two places, the Agricutlure and the seed savers movement and open pollinated seeds and the deisre to own as many commodore 64 games as possible.
+
+---
+
+![floppy disc showing write protext notch](img/disc.jpg)
 
 ---
 
 ## *High Resolution Orthoimagery is one of the foundations of a Modern GIS.*
 
+_note:
+serves as the basis for all our desktop and web maps
+
 ---
 
 ### Why not Commerical *(Satellite)* Imagery?
 
-- No control over Projections/Transformations
 - Commercial Imagery is Outdated
+- No control over Projections/Transformations
 - Cannot be supplemented with UAV Mosaics
-- Low Resolution [(15cm Sat Coming Soon!)](https://www.geospatialworld.net/news/radar-satellite-startup-umbra-plans-to-capture-imagery-with-15-cm-resolution/)
+- Low Resolution
+  - [15cm Native Imagery - Umbra](https://www.geospatialworld.net/news/radar-satellite-startup-umbra-plans-to-capture-imagery-with-15-cm-resolution/)
+  - [15cm Maxar Upscaled Imagery](https://blog.maxar.com/earth-intelligence/2020/introducing-15-cm-hd-the-highest-clarity-from-commercial-satellite-imagery)
 
 ---
 
@@ -138,11 +156,14 @@ Ohio GIS Conference 2021
 
 ## Why FOSS4G *DIY* Tiles
 
-- No need to tie up your production machine for a week tiling raster data 
+- No need to tie up your production machine for a week image processing
 - You get to learn more about how web maps work
 - No need for commercial software to create or publishing raster tiles to the web
 - Full control of the mosaic to tile pipleing
 - You want to plan a mission to Mars
+
+_note: 
+in some instances the Esri solutions were faster to run, in others the open source solution...but for the main orthomosaic COG, gdal_translate was several days faster and created an output tiff 
 
 ---
 
@@ -364,6 +385,13 @@ Replacement for the default NAD83 projection definition in GDAL.
 
 gdalwarp -t_srs EPSG:3857 -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" -r average -multi -srcnodata 255 -of VRT input_file.tif output_file.vrt
 
+gdalwarp OSIP_2018_3IN_COG.tif OSIP_2018_3IN_COG_3857.vrt ^
+-t_srs EPSG:3857 ^
+-s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" ^
+-of VRT ^
+-dstalpha ^
+-overwrite
+
 ```
 
 .vrt is a supported Raster format type for Esri applications. See https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
@@ -530,3 +558,7 @@ gdalinfo g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
 - https://developers.google.com/kml/articles/raster
 - http://www.perrygeo.com/lazy-raster-processing-with-gdal-vrts.html
 - https://jeromegagnonvoyer.wordpress.com/2015/08/06/merging-multiple-mbtiles-together/
+
+"It essentially relies upon the GTiff – GeoTIFF File Format driver with the COPY_SRC_OVERVIEWS=YES creation option, but automatically does the needed preprocessing stages (reprojection if asked and creation of overviews on imagery and/or mask) if not already done, and also takes care of morphing the input dataset into the expected form when using some compression types (for example a RGBA dataset will be transparently converted to a RGB+mask dataset when selecting JPEG compression)" ~ [GDAL](https://gdal.org/drivers/raster/cog.html)
+
+QGIS gdal2tiles - artifacts on drawing

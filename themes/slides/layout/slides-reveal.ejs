@@ -2,7 +2,7 @@
   <div class="slides" id="slides">
     <% if (page.markdown) { %>
     <!-- page.markdown -->
-    <section data-markdown data-separator="---">
+    <section data-markdown data-separator="---" data-separator-notes="^_note:">
       <textarea data-template>
       <%- page.content %>
       </textarea>

@@ -1,7 +1,7 @@
 # Site
 title: Slides
 description: >- 
-  Presentations, talks, and workshops on data visualization, open source geospatial tools, technology and the occasional off-topic rant.
+  Presentations, talks, and workshops on data visualization, open source geospatial tools, technology and the occasional off-topic rant. For more information visit <a href="https://www.getbounds.com">getBounds</a>.
 keywords: ["gis", "blog", "geospatial", "vector tiles", "mapbox", "leaflet", "web maps", "dataviz"]
 author: Malcolm Meyer
 language: en
