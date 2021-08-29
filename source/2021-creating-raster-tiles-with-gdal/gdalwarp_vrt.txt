@@ -51,4 +51,8 @@ always less than 2 cm." ~ https://www.fs.fed.us/GRAIP/downloads/GPS/Understandin
 
 https://desktop.arcgis.com/en/arcmap/latest/map/projections/pdf/geographic_transformations.pdf
 
+WGS_1984_(ITRF00)_To_NAD_1983 108190 Coordinate_Frame 0.9956 -1.9013 -0.5215 0.025915 0.009426 0.011599 0.00062
+WGS_1984_(ITRF00)_To_NAD_1983_2011 108354 Coordinate_Frame 0.9956 -1.9013 -0.5215 0.025915 0.009426 0.011599 0.00062
+WGS_1984_(ITRF00)_To_NAD_1983_CORS96 108151 Coordinate_Frame 0.9956 -1.9013 -0.5215 0.025915 0.009426 0.011599 0.00062
+WGS_1984_(ITRF00)_To_NAD_1983_HARN 108282 Coordinate_Frame 0.9956 -1.9013 -0.5215 0.025915 0.009426 0.011599 0.00062
 
