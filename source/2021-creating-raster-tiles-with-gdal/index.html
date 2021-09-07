@@ -38,13 +38,14 @@ css: >-
   }
 
   .reveal blockquote {
-    font-family: "Galaxy";
+  /*    font-family: "Galaxy";*/
   /*background: hsl(349deg 86% 95%);*/
     border-radius: 5px;
-    padding: 2rem;
+    padding: 1.5rem;
+    width: 90%;
     text-align: center;
     font-style: normal;
-    font-size: 1.5em;
+    font-size: 1.2em;
 
   }
 
@@ -158,8 +159,8 @@ serves as the basis for all our desktop and web maps
 
 - No need to tie up your production machine for a week image processing
 - You get to learn more about how web maps work
-- No need for commercial software to create or publishing raster tiles to the web
-- Full control of the mosaic to tile pipleing
+- No need for commercial software to create or publish raster tiles to the web
+- Full control of the mosaic to tile pipeline
 - You want to plan a mission to Mars
 
 _note: 
@@ -189,7 +190,18 @@ in some instances the Esri solutions were faster to run, in others the open sour
 
 ---
 
-# Overview of Raster Tiles
+## *Pipeline*
+
+  - 1 Raw TIFF
+  - 2 Mosaic
+  - 3 Cloud Optimized GeoTIFF
+  - 4 Raster Tiles
+
+---
+
+## Cloud Optimized GeoTIFF
+
+> A regular GeoTIFF file, aimed at being hosted on a HTTP file server, with an internal organization that enables more efficient workflows on the cloud.
 
 ---
 
@@ -199,7 +211,7 @@ in some instances the Esri solutions were faster to run, in others the open sour
 
 ![](img/zoom-levels.png)
 
-Each zoom level is a directory, each column is a subdirectory, and each tile is a file.
+Each zoom level is a directory, each column is a subdirectory, and each tile is an image.
 
 ---
 
@@ -251,7 +263,14 @@ SpatialReference.org
 
 ---
 
-show examples of data transformed and not transformed
+## Image Processing Tools
+
+### **GDAL**
+
+ - gdalinfo
+ - gdalbuildvrt
+ - gdal_translate
+ - gdal_warp
 
 ---
 
@@ -260,17 +279,20 @@ show examples of data transformed and not transformed
 - ArcGIS Image Cache
 - gdal2tiles
 - QGIS Generate xyz tiles (mbtiles)
+- gdal_translate (mbtiles)
 
 ---
 
 ## Hosting Options
 
+- COG
+  - Terracotta, Titiler (Python)
 - ArcGIS Image Cache 
   - ArcGIS Server/AGOL
 - XYZ Folder Tree
   - **Any web host**
 - mbtiles file
-  - mbtileserver, many others
+  - mbtileserver (Go), wmts-server (NodeJS), many more...
 
 ---
 
@@ -289,6 +311,27 @@ show examples of data transformed and not transformed
 
 ---
 
+## Custom WMTS Tile Server
+
+### WMTS Endpoint & <strong style="text-shadow: 2px 2px #FFF">OverZoom</strong>
+
+> Take a tile at zoom level 20, resize it, slice it up and serve it back to the client!
+
+---
+### OverZoom Example
+
+<span style="float:left;display:flex">
+
+  ![sliced up image](img/z20.png)
+
+  ![sliced up image](img/z21.png)
+  
+  ![sliced up image](img/z22.png)
+
+</span>
+
+---
+
 # BREAK
 
 ---
@@ -301,19 +344,8 @@ show examples of data transformed and not transformed
 - Have gdal installed and working
   - Open OSGeo4W Shell
   - Type ``gdalinfo --version``
-  - Return ~ ``GDAL 3.1.4, released 2020/10/20``
+  - Return ~ ``GDAL 3.3.1, released 2021/06/28``
 - Obtain a copy of the sample rasters
-
----
-
-## Image > Tile Pipeline
-
-1. Raw TIFF Mosaic (Provided by Vendor or created in Arc*)
-2. ArcGIS Pro: Copy Raster > LERC with NoData as 255
-  2. This file is temporary and can be deleted once the tiles are created.
-  3. Pyramids are not needed, speeding up creation time. 
-3. QGIS: Generate XYZ Tiles (mbtiles)
-4. Serve with `wmts-server`
 
 ---
 
