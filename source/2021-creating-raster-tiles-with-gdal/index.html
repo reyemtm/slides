@@ -340,7 +340,7 @@ SpatialReference.org
 
 *For those wanting to follow along.*
 
-- Have QGIS 3.x installed and working
+- Have QGIS ^3.x installed and working
 - Have gdal installed and working
   - Open OSGeo4W Shell
   - Type ``gdalinfo --version``
@@ -353,17 +353,21 @@ SpatialReference.org
 
 1.Explore raster metadata with gdalinfo.
 
-2.Verify the accuracy of the data in QGIS with GPS ground truthed data.
+2.Verify the accuracy of the data in QGIS with GPS ground control points.
 
-3.Virtually transform the raster with gdalwarp.
+2.Create a Mosaic with `gdalbuildvrt` (force NAD83 SP South).
+
+3.Create the COG with `gdal_translate`.
 
 4.Examine the output in QGIS.
 
-5.Run gdal2tiles and test the output.
+5.Create another VRT in WebMercator.
 
-6.Run Generate XYZ Tiles (mbtiles) in QGIS.
+6.Generate Raster Tiles with `gdal2tiles`, `gdal_translate`, and QGIS.
 
-7.Serve mbtiles file with wmts-server.
+7.Serve the raster tiles with `wmts-server`.
+
+8.View the mbtiles file on mobile with ?.
 
 ---
 
@@ -432,18 +436,13 @@ gdalwarp OSIP_2018_3IN_COG.tif OSIP_2018_3IN_COG_3857.vrt ^
 
 ---
 
-### Pre-processing
+## **MrSID**
 
-**Raw TIFF Files (ArcGIS Pro)**
+### GDAL MrSID Driver
 
-1. Created a Mosaic of TIFF files
-2. Projected Raster to EPSG:3735 LZW TIFF
-3. Projected Raster to EPSG:3857 JPG YCbCR TIFF
+> This Extensis’ decoding software development kit is not free software, you should contact Extensis to obtain it.
 
-**OGRIP MrSID Files (QGIS)**
-
-1. Copy Raster to EPSG:3857 JPG YCbCR
-  - (NULL Transformation)
+*If you have Arc* installed you will likely have this driver available in GDAL.*
 
 ---
 
