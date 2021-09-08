@@ -104,12 +104,12 @@ Ohio GIS Conference 2021
 - ☕ Coffee, 🌾 Gardening, 🎸 Music 
 - ❤️❤️❤️
 
-_note:
-My inital exposure to open source came from two places, the Agricutlure and the seed savers movement and open pollinated seeds and the deisre to own as many commodore 64 games as possible.
-
 ---
 
 ![floppy disc showing write protext notch](img/disc.jpg)
+
+_note:
+My inital exposure to open source came from two places, the Agricutlure and the seed savers movement and open pollinated seeds and the deisre to own as many commodore 64 games as possible.
 
 ---
 
@@ -124,10 +124,14 @@ serves as the basis for all our desktop and web maps
 
 - Commercial Imagery is Outdated
 - No control over Projections/Transformations
-- Cannot be supplemented with UAV Mosaics
+- No control of the tile server
 - Low Resolution
   - [15cm Native Imagery - Umbra](https://www.geospatialworld.net/news/radar-satellite-startup-umbra-plans-to-capture-imagery-with-15-cm-resolution/)
   - [15cm Maxar Upscaled Imagery](https://blog.maxar.com/earth-intelligence/2020/introducing-15-cm-hd-the-highest-clarity-from-commercial-satellite-imagery)
+
+
+_note:
+I am going to show three screenshots taken from three map imagery providers, all in the same day earlier this year and then we can compare these with our locally sourced imagery
 
 ---
 
@@ -157,13 +161,14 @@ serves as the basis for all our desktop and web maps
 
 ## Why FOSS4G *DIY* Tiles
 
-- No need to tie up your production machine for a week image processing
+- No need to tie up a licensed/production machine for image processing
 - You get to learn more about how web maps work
 - No need for commercial software to create or publish raster tiles to the web
 - Full control of the mosaic to tile pipeline
 - You want to plan a mission to Mars
 
 _note: 
+We know we want to use our own imagery, but why use open source tools for image processing?
 in some instances the Esri solutions were faster to run, in others the open source solution...but for the main orthomosaic COG, gdal_translate was several days faster and created an output tiff 
 
 ---
@@ -263,6 +268,12 @@ SpatialReference.org
 
 ---
 
+## On Transformations
+
+> It’s the classic problem of spurious precision...The problem we’re trying to solve is topological accuracy, not absolute accuracy. ~ Utah Geospatial Resource Center
+
+---
+
 ## Image Processing Tools
 
 ### **GDAL**
@@ -318,7 +329,7 @@ SpatialReference.org
 > Take a tile at zoom level 20, resize it, slice it up and serve it back to the client!
 
 ---
-### OverZoom Example
+## OverZoom Example
 
 <span style="float:left;display:flex">
 
@@ -331,6 +342,16 @@ SpatialReference.org
 </span>
 
 ---
+
+## Mobile Viewing of MBTiles
+
+- Input/Mergin
+- MapTiler
+- SWMaps
+- QField
+
+---
+
 
 # BREAK
 
