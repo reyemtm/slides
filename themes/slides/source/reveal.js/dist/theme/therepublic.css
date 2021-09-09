@@ -2,3 +2,33 @@
 @import url("../../../star_jedi/starjedi/starjedi.css");
 @import url("../../../sf-distant-galaxy-font/galaxy.css");
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Kanit:wght@400;500;600;700;800;900&display=swap');
+
+::selection {
+  color: crimson;
+  background: whitesmoke;
+  text-shadow: none;
+}
+
+/*print only*/
+
+.print-pdf .reveal,
+.print-pdf .reveal .slides {
+  color: #000!important;
+}
+
+.print-pdf .reveal .slide-background {
+  background-color: white!important;
+}
+.print-pdf .reveal h1,
+.print-pdf .reveal h2,
+.print-pdf .reveal h3,
+.print-pdf .reveal h4 {
+  color: #000!important;
+  background: transparent;
+}
+
+.print-pdf .reveal em,
+.print-pdf .reveal blockquote,
+.print-pdf .reveal strong {
+  color: orchid!important;
+}

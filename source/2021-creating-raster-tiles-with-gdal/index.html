@@ -9,13 +9,12 @@ transition: none
 css: >-
   .reveal .slide-background {
     background-color: #121212;
-
   }
   h1 {
     text-align: inherit;
   }
-  .reveal .slides {
-    color: #fff;
+  .reveal:not(.overview) .slides {
+    color: whitesmoke;
     max-height: calc(100% - 6rem);
     overflow: hidden;
     text-align: left;
@@ -26,7 +25,7 @@ css: >-
   }
   
   .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-    color: #fff;
+    color: whitesmoke;
     font-family: "Kanit", monospace;
     font-weight: 600;
     text-transform: none
@@ -38,15 +37,12 @@ css: >-
   }
 
   .reveal blockquote {
-  /*    font-family: "Galaxy";*/
-  /*background: hsl(349deg 86% 95%);*/
     border-radius: 5px;
     padding: 1.5rem;
     width: 90%;
-    text-align: center;
     font-style: normal;
     font-size: 1.2em;
-
+    margin: 0;
   }
 
   .reveal blockquote, .controls-arrow {
@@ -80,6 +76,15 @@ css: >-
   }
   .reveal pre {
     width: 100%;
+  }
+  .reveal pre code {
+    font-size: larger;
+  }
+  .hljs, .highlight {
+    padding: 0;
+  }
+  .navigate-right, .navigate-left {
+    overflow: hidden;
   }
 center: false
 highlight: monokai.css
@@ -153,18 +158,19 @@ I am going to show three screenshots taken from three map imagery providers, all
 
 ---
 
-### *Local 2020 Aerial*
+### Local 2020 Aerial
 
 ![](img/medcenter-local.png)
 
 ---
 
-## Why FOSS4G *DIY* Tiles
+## Why **DIY** Image Processing
 
 - No need to tie up a licensed/production machine for image processing
 - You get to learn more about how web maps work
 - No need for commercial software to create or publish raster tiles to the web
 - Full control of the mosaic to tile pipeline
+- Full control over the tile server
 - You want to plan a mission to Mars
 
 _note: 
@@ -181,26 +187,31 @@ in some instances the Esri solutions were faster to run, in others the open sour
 
 ## Simple Deployment
 
-### *The output can be deployed on any static web host or CDN**
+### **The output can be deployed on any static web host or CDN***
 
 <br>
 
-*In some instances it will be advantageous to use a single mbtiles file (sqlite db) instead of a directory of tiles.
+**In some instances it will be advantageous to use a single mbtiles file (sqlite db) instead of a directory of tiles.*
 
 ---
 
-## Tools are *Open Source*
+## Tools are **Open Source**
 
 [![alt=image of mars](img/mmgis-snapshot.png)](https://mars.nasa.gov/maps/)
 
 ---
 
-## *Pipeline*
+## Imagery Pipeline
 
-  - 1 Raw TIFF
-  - 2 Mosaic
-  - 3 Cloud Optimized GeoTIFF
-  - 4 Raster Tiles
+  - 1 **Raw TIFF**
+    - Available from OSIP
+  - 2 **Mosaic**
+    - Intermediate File
+  - 3 *Cloud Optimized GeoTIFF*
+    - Used in Desktop GIS
+  - 4 *Raster Tiles*
+    - Used in Web Maps
+  - 5 *Tile Server*
 
 ---
 
@@ -212,7 +223,7 @@ in some instances the Esri solutions were faster to run, in others the open sour
 
 ## Raster Tile Basics
 
-*Maps are usually in Web Mercator EPSG:3857*
+*Web Maps are usually in Web Mercator EPSG:3857*
 
 ![](img/zoom-levels.png)
 
@@ -223,6 +234,9 @@ Each zoom level is a directory, each column is a subdirectory, and each tile is 
 #### Carta do Mundo de Mercator (1569)
 
 [![alt=Carta do Mundo de Mercator 1569](img/1024px-Mercator_1569.png)]((https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png))
+
+_note:
+In 1569, Mercator published his epic world map. This map, with its Mercator projection, was designed to help sailors navigate around the globe. They could use latitude and longitude lines to plot a straight route. ... Geradus Mercator's world maps flattened the spherical planet to make it easier to display.
 
 ---
 
@@ -248,32 +262,6 @@ Each zoom level is a directory, each column is a subdirectory, and each tile is 
 
 ---
 
-### Note on Transformations
-
-*NAD83 < > WGS84*
-
-EPSG.io ([skip ahead](./#/18))
-
-<pre>
-  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs 
-  </code>
-</pre>
-
-SpatialReference.org
-
-<pre>
-  <code>+proj=lcc +lat_1=40.03333333333333 +lat_2=38.73333333333333 +lat_0=38 +lon_0=-82.5 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
-  </code>
-</pre>
-
----
-
-## On Transformations
-
-> It’s the classic problem of spurious precision...The problem we’re trying to solve is topological accuracy, not absolute accuracy. ~ Utah Geospatial Resource Center
-
----
-
 ## Image Processing Tools
 
 ### **GDAL**
@@ -281,13 +269,12 @@ SpatialReference.org
  - gdalinfo
  - gdalbuildvrt
  - gdal_translate
- - gdal_warp
+ - gdalwarp
 
 ---
 
 ## Raster Tiling Tools
 
-- ArcGIS Image Cache
 - gdal2tiles
 - QGIS Generate xyz tiles (mbtiles)
 - gdal_translate (mbtiles)
@@ -298,12 +285,12 @@ SpatialReference.org
 
 - COG
   - Terracotta, Titiler (Python)
-- ArcGIS Image Cache 
-  - ArcGIS Server/AGOL
 - XYZ Folder Tree
-  - **Any web host**
-- mbtiles file
-  - mbtileserver (Go), wmts-server (NodeJS), many more...
+  - *Any web host*
+- MBTiles
+  - mbtileserver (Go)
+  - wmts-server (NodeJS)
+  - many more...
 
 ---
 
@@ -312,15 +299,25 @@ SpatialReference.org
 |Source|Files|Format|Size|
 |-|-:|-|-:|
 |Raw Tiff|39,985|TIFF|1150 GB|
-|*Esri Export*|4|TIFF/LERC|620 GB|
-|gdal_translate COG|2|TIFF/JPG|82 GB|
+|Esri Export|4|TIFF/LERC|620 GB|
+|gdal_translate COG|2|TIFF/JPG|*82 GB*|
 |ArcGIS Cache|1,316|PNG,JPG|101 GB|
 |Raster Tiles|11,511,665|PNG|851 GB|
-|Raster Tiles|11,511,665|**WEBP**|200 GB|
 |Raster Tiles|11,511,665|JPG|120 GB|
-|mbtiles|1|SQLITE/JPG|115 GB|
+|MBTiles z20|1|PNG|200 GB|
 
 ---
+
+## OverZoom in AGOL
+
+> OverZoom is not consistent between mapping APIs, so managing this at the server level allows us to enable overzoom for all maps.
+
+[AGOL Cache](https://tiles.arcgis.com/tiles/CRjnKyCe3OfYTMC3/arcgis/rest/services/2020_Fairfiled_3857_Cache/MapServer)
+
+[AGOL Example](https://lancastergis.maps.arcgis.com/home/webmap/viewer.html?webmap=9d2c02ea2e9e49a3ad248df1da8d14b1)
+
+---
+
 
 ## Custom WMTS Tile Server
 
@@ -343,12 +340,17 @@ SpatialReference.org
 
 ---
 
-## Mobile Viewing of MBTiles
+## Viewing MBTiles on Android
 
 - Input/Mergin
 - MapTiler
-- SWMaps
+- **SWMaps**
 - QField
+
+---
+
+  <img src="img/swmaps.jpg" alt="screenshot of mbtiles on swmaps" style="width:33%;margin:0 33%;">
+
 
 ---
 
@@ -370,43 +372,112 @@ SpatialReference.org
 
 ---
 
-## The Process
+### The Process
 
-1.Explore raster metadata with gdalinfo.
-
-2.Verify the accuracy of the data in QGIS with GPS ground control points.
-
-2.Create a Mosaic with `gdalbuildvrt` (force NAD83 SP South).
-
-3.Create the COG with `gdal_translate`.
-
-4.Examine the output in QGIS.
-
-5.Create another VRT in WebMercator.
-
-6.Generate Raster Tiles with `gdal2tiles`, `gdal_translate`, and QGIS.
-
-7.Serve the raster tiles with `wmts-server`.
-
-8.View the mbtiles file on mobile with ?.
-
+```JavaScript
+  Explore raster metadata with gdalinfo.
+  Verify the accuracy of the data in QGIS with NGS ground control points.
+  Create a Mosaic with gdalbuildvrt (force NAD83 SP South).
+  Create the COG with gdal_translate.
+  Examine the output in QGIS.
+  Create another VRT in WebMercator.
+  Generate Raster Tiles with gdal2tiles, gdal_translate, and QGIS.
+  Serve the raster tiles with wmts-server.
+  View the mbtiles file on mobile with SW Maps.
+```
 ---
 
-gdal-info
-
-XYZ map tiles what are they brief explanation
-
-![](/images/zoom-levels.png)
-
-[See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
-
----
-
-## *Null Transformation*
+## gdal-info
 
 <pre>
   <code>
-    +datum=NAD83 | +towgs84=0,0,0,0,0,0,0
+    gdalinfo --version
+    > GDAL 3.3.1, released 2021/06/28
+  </code>
+</pre>
+
+<pre>
+  <code>
+    gdalinfo OSIP\BS921630.tif
+    > Lots of Metadata
+  </code>
+</pre>
+
+---
+
+## Virtual rasters
+
+`.vrt` is a supported Raster format type for ArcMap, ArcGIS Pro and QGIS.
+
+See https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
+
+---
+
+## Create the Mosaic
+
+Create the mosaic in the native projection, adding in our own alpha band.
+
+<pre>
+  <code class="">
+    gdalbuildvrt -b 1 -b 2 -b 3 -addalpha mosaic.vrt OSIP/*.tif
+  </code>
+</pre>
+
+---
+
+## Transformations
+
+> We need our data in NAD 1983 (2011) EPSG:6551 and WebMercator EPSG:3857, but the imagery is in EPSG:3754!
+
+_note:
+If you are using NAD83 not 2011, so 3754 or 3753 you may run into projection and transformation issues. See me later for ideas.
+
+---
+
+## Create the Cloud Optimized GeoTIFF
+
+<pre>
+  <code class="">
+    gdal_translate mosaic.vrt cog.tif ^
+    -a_srs EPSG:6551 ^
+    -of COG ^
+    -co RESAMPLING=CUBIC -co COMPRESS=JPEG -co BIGTIFF=YES -co QUALITY=70 -co NUM_THREADS=ALL_CPUS
+  </code>
+</pre>
+
+*The `-a_srs` option forces an output projection without performing a transformation.*
+
+_note:
+Create the COG using JPEG compression and force the NAD 1983 projection without performing a transformation. The difference between 3754 and 6551 is basically null. Optionally you can use `gdalwarp` and use the default transoformation or provide your own.
+
+This is the file that our desktop users will load onto their machines.
+The COG format is purpose built for use over low bandwidth connections, so it is perfect for using over a city-wide file-share network. In testing it is faster than loading a mosaic in our enterprise SQL database.
+
+"...the horizontal discrepancy between the NAD 83 (CORS93) and NAD 83
+(HARN) positions for a control point is almost always less than 10 cm, and the horizontal
+discrepancy between any two NAD 83 (CORSxx) positions for a control point is almost
+always less than 2 cm." ~ https://www.fs.fed.us/GRAIP/downloads/GPS/Understanding%20the%20Evolution%20of%20WGS%201984%20and%20NAD%201983%20(Rev2).pdf
+
+---
+
+## Validate the COG
+
+![cloud optimnized geotiff shows as valid](img/cog_valid.png)
+
+[http://cog-validate.radiant.earth/html](http://cog-validate.radiant.earth/html)
+
+---
+
+## Convert to WebMercator
+
+> The default GDAL/Proj transformation from the NAD 1983 datum to WGS 1984 datum is null, and the only other option does not exactly match the default option in our commercial software.
+
+---
+#### *GDAL NAD 1983 2011 to WGS 1984 3*
+<pre>
+  <code>
+    +x=-0.991 +y=1.9072 +z=0.5129 +rx=-0.0257899075194932
+    +ry=-0.0096500989602704 +rz=-0.0116599432323421
   </code>
 </pre>
 
@@ -418,184 +489,119 @@ XYZ map tiles what are they brief explanation
   </code>
 </pre>
 
+[geographic transformations](https://desktop.arcgis.com/en/arcmap/latest/map/projections/pdf/geographic_transformations.pdf)
+
 [proj definitions](#/12)
+---
+
+## Spurious Precision
+
+> It’s the classic problem of spurious precision...The problem we’re trying to solve is topological accuracy, not absolute accuracy. ~ Utah Geospatial Resource Center
+
+_note:
+GIS is a representation of the world, not an exact replica - if you need absolute accuracy you might be at the wrong conference - 99% percent of GIS folks are not licensed surveyors
+
 ---
 
 ## Proj4 String
 
-Replacement for the default NAD83 projection definition in GDAL.
+Replacement for the default NAD83 datum transformation definition in GDAL.
 
 <pre>
   <code>
-    +proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.73333333333 \
-    +x_0=600000 +y_0=0 +ellps=GRS80 \
-    +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 \
+    +proj=lcc +lat_0=38 +lon_0=-82.5 ^
+    +lat_1=40.0333333333333 +lat_2=38.73333333333 ^
+    +x_0=600000 +y_0=0 +ellps=GRS80 ^
+    +towgs84=-0.9956,1.9013,0.5215,0.025915,^
+    0.009246,0.011599,-0.00062 ^
     +units=us-ft +no_defs
   </code>
 </pre>
 
 ---
 
-`run gdalwarp project into 3857 - this results in a crisper image compared to virtually transforming into 4326`
+## Create a VRT in 3857
 
-```bash
+<pre>
+  <code>
+    gdalwarp cog.tif web.vrt ^
+    -t_srs EPSG:3857 ^
+    -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" ^
+    -dstalpha ^
+    -et 0 ^
+    -r lanczos ^
+    -of VRT ^
+    -overwrite
 
-gdalwarp -t_srs EPSG:3857 -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" -r average -multi -srcnodata 255 -of VRT input_file.tif output_file.vrt
+</code>
+</pre>
 
-gdalwarp OSIP_2018_3IN_COG.tif OSIP_2018_3IN_COG_3857.vrt ^
--t_srs EPSG:3857 ^
--s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" ^
--of VRT ^
--dstalpha ^
--overwrite
+`-et`: error threshold
 
-```
+_note: 
+there is not warping happening here, just the directions on how to project the raster
+---
 
-.vrt is a supported Raster format type for Esri applications. See https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
+## Create the Raster Tiles
 
-*This resulting virtual raster can be used directly in ArcGIS Pro or QGIS to create a Map Server Tile Cache or mbtiles cache instead of having to first export the original raster into Web Mercator.*
+- gdal2tiles.py
+- QGIS Generate XYZ Tiles (mbiles)
+- gdal_translate or gdalwarp
 
 ---
 
-## **MrSID**
+## gdal_translate
 
-### GDAL MrSID Driver
+<pre>
+  <code>
+    gdal_translate -of MBTILES ^
+    --config GDAL_NUM_THREADS ALL_CPUS ^
+    -co ZOOM_LEVEL_STRATEGY=LOWER ^
+    -co RESAMPLING=CUBIC ^
+    -co TILE_FORMAT=PNG ^
+    web.vrt tiles.mbtiles
+  </code>
+</pre>
 
-> This Extensis’ decoding software development kit is not free software, you should contact Extensis to obtain it.
+<pre>
+  <code class="nginx">
+    gdaladdo tiles.mbtiles -r cubic
 
-*If you have Arc* installed you will likely have this driver available in GDAL.*
-
----
-
-### Let's Explore Some Data
-
-<pre><code data-trim data-noescape data-python>gdalinfo Franklin_rgb_100x.sid
-</code></pre>
-
----
-
-### Key Components
-
-- NODATA Value
-- Projection
-- Compression
-- Pyramids
+</code>
+</pre>
 
 ---
+## gdal2tiles
 
-[See Leaflet Example](https://leafletjs.com/examples/zoom-levels/)
+<pre>
+  <code>
+    python.exe gdal2tiles.py -xyz -v sourceFile.tif outputFolder
+  </code>
+</pre>
 
-Colorizing in QGIS
-NODATA
-
-Clip and project the raster
-Cut the raster into png XYZ image tiles
-Convert the png images to webp
-Directly copy the files to the server via USB
-Each additional zoom inceases the total tiles by previous zoom number of tiles x 2
-Optionally convert the directory of png image tiles to the webp format.
-
----
-
-## Get the Data
-
----
-
-transparency
-
----
-
-web preview
-
----
-
-multi-threaded
-
----
-
-output format
-
-- png
-- jpg
-- webp
-
----
-
-QGIS Built-in Converter
-
-
-Load the raster into QGIS
-Change the zoomed in sampling to Average and any other settings under properties
-Export to raster tiles using the processing tool Generate XYZ Tiles
-
----
-
+_note:
 Use the latest gdal2tiles.py python script downloaded from the gdal GitHub site to cut the tif into a folder of high resolution raster tiles for use in web mapping. There are similar scripts that will output to mbtiles, output to geopackage, or write to JPG files. This script was originally written by the developer of MapTiler. The default for this updated script is to use all the availabel cpu cores, so be careful when running it. Set the --processes to something you can live with, such as half the available cores. A maximum zoom limit of 20 seems to be a good limit, which is about street level, however if you want to use them in AGOL you will need to go to zoom 21 as AGOL does not overzoom tiles.
 
 ---
 
-```Python
-python.exe gdal2tiles.py -xyz -v sourceFile.tif outputFolder
-```
-
-```Python
-python gdal2tiles.py -e -z 0-21 -v --xyz --processes=ALL original_tiff_file destination_directory
-```
-
-```
---tilesize=512
-```
-
-## Hosting your Tiles
-
-- https://github.com/maptiler/tileserver-php
-- https://github.com/consbio/mbtileserver
-
----
-
-### Merging & Updating mbtiles
-
-Using DB Browser (SQLite), run the following SQL command with the destination mbtiles file open.
-
-<pre><code>PRAGMA journal_mode=PERSIST;
-PRAGMA page_size=80000;
-PRAGMA synchronous=OFF;
-ATTACH DATABASE 'c:/path/to/updated_file.mbtiles' AS source;
-REPLACE INTO tiles SELECT * FROM source.tiles;
-</code></pre>
-
----
-
-
-## Raster Tile Servers
+## Hosting & Serving
 
 Copying millions of small files can take a very long time, however deployment is as simple as pointing a web server to a folder.
 
-Using an mbtiles database and server has a few key advantageous
+#### *Advantages of MBTiles*
 
-* The entire file cache is stored in a single file vs millions of small files.
-* Complete control of the image server, allowing things like overzoom to be handled by the server instead of the client
+* One file vs millions of files
+* Complete control of the tile server
 
+---
+### Tile Servers
 
-### mbtileserver
-
-- mbtileserver
+- [mbtileserver](https://github.com/consbio/mbtileserver)
  - Written in GO, deployed via a windows exe file
-- wmts-server
+- [wmts-server](https://github.com/reyemtm/wmts-server)
  - NodeJS server with WMTS endoints and 3x overzoom
 
 ---
-
-```
-gdalinfo raster.tif
-```
-gdalsrsinfo -o proj4 g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
-gdalinfo g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
-
-[https://gdal.org/programs/gdalsrsinfo.html](https://gdal.org/programs/gdalsrsinfo.html)
-[https://gdal.org/programs/gdalinfo.html](https://gdal.org/programs/gdalinfo.html)
----
-
 
 #### References
 
@@ -611,6 +617,11 @@ gdalinfo g:\data\imagery\fairfield\2020\OHFAIR20-SID-3INCH.sid
 - http://www.perrygeo.com/lazy-raster-processing-with-gdal-vrts.html
 - https://jeromegagnonvoyer.wordpress.com/2015/08/06/merging-multiple-mbtiles-together/
 
-"It essentially relies upon the GTiff – GeoTIFF File Format driver with the COPY_SRC_OVERVIEWS=YES creation option, but automatically does the needed preprocessing stages (reprojection if asked and creation of overviews on imagery and/or mask) if not already done, and also takes care of morphing the input dataset into the expected form when using some compression types (for example a RGBA dataset will be transparently converted to a RGB+mask dataset when selecting JPEG compression)" ~ [GDAL](https://gdal.org/drivers/raster/cog.html)
+---
+# Thanks!
 
-QGIS gdal2tiles - artifacts on drawing
+*Malcolm Meyer*
+
+Twitter and the Web **@getBounds**
+
+---

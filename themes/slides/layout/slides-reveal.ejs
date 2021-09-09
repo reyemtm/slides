@@ -45,3 +45,15 @@
     plugins: [ RevealMarkdown, RevealHighlight, RevealNotes]
   })
 </script>
+<script>
+  document.body.addEventListener("click", (e) => {
+    if (e.target.href) {
+      var a = new RegExp('/' + window.location.host + '/');
+      if (!a.test(e.target.href)) {
+        e.preventDefault()
+        e.stopPropagation();
+        window.open(e.target.href, '_blank');
+      }
+    }
+  })
+</script>
