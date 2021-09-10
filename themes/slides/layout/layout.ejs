@@ -3,6 +3,15 @@
 <head>
   <!-- <% page.layout %> -->
   <%- partial('_partial/head') %>
+
+  <% if (page.layout == "slides-reveal") { %>
+    <style>
+  .navigate-right, .navigate-left {
+    overflow: hidden;
+  }
+  </style>
+  <%}%>
+  
 </head> 
 <body>
   

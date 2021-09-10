@@ -41,8 +41,12 @@ css: >-
     padding: 1.5rem;
     width: 90%;
     font-style: normal;
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin: 0;
+  }
+
+  .reveal blockquote p {
+    margin: 0
   }
 
   .reveal blockquote, .controls-arrow {
@@ -82,9 +86,6 @@ css: >-
   }
   .hljs, .highlight {
     padding: 0;
-  }
-  .navigate-right, .navigate-left {
-    overflow: hidden;
   }
 center: false
 highlight: monokai.css
@@ -166,11 +167,10 @@ I am going to show three screenshots taken from three map imagery providers, all
 
 ## Why **DIY** Image Processing
 
-- No need to tie up a licensed/production machine for image processing
-- You get to learn more about how web maps work
-- No need for commercial software to create or publish raster tiles to the web
+- No license needed and runs on any machine
 - Full control of the mosaic to tile pipeline
 - Full control over the tile server
+- You get to learn more about how web maps work
 - You want to plan a mission to Mars
 
 _note: 
@@ -242,13 +242,13 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 
 ## The 'Mercator' Projection
 
-*Firstly, to spread on a plane the surface of the sphere in such a way that the positions of places shall correspond on all sides with each other, both in so far as true direction and distance are concerned and as correct longitudes and latitudes...*
+> Firstly, to spread on a plane the surface of the sphere in such a way that the positions of places shall correspond on all sides with each other, both in so far as true direction and distance are concerned and as correct longitudes and latitudes...
 
 ---
 
 ## On Cartography
 
-*...the limitations of ancient geography be not unknown and that the honour which is due to past centuries be given to them.*
+> ...the limitations of ancient geography be not unknown and that the honour which is due to past centuries be given to them.
 
 ~ Gerardus Mercator, 1569
 
@@ -405,6 +405,18 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 
 ---
 
+## Accuracy Validation
+
+![](img/qgis_ngs.png)
+
+---
+
+## NGS Marker in Person
+
+![gps unit on top of Benchmark](img/marker.jpg)
+
+---
+
 ## Virtual rasters
 
 `.vrt` is a supported Raster format type for ArcMap, ArcGIS Pro and QGIS.
@@ -436,6 +448,8 @@ If you are using NAD83 not 2011, so 3754 or 3753 you may run into projection and
 
 ## Create the Cloud Optimized GeoTIFF
 
+CHECK THE RESAMPLING HERE
+
 <pre>
   <code class="">
     gdal_translate mosaic.vrt cog.tif ^
@@ -445,7 +459,7 @@ If you are using NAD83 not 2011, so 3754 or 3753 you may run into projection and
   </code>
 </pre>
 
-*The `-a_srs` option forces an output projection without performing a transformation.*
+*The `-a_srs` option assigns an output projection without performing a transformation.*
 
 _note:
 Create the COG using JPEG compression and force the NAD 1983 projection without performing a transformation. The difference between 3754 and 6551 is basically null. Optionally you can use `gdalwarp` and use the default transoformation or provide your own.
@@ -552,20 +566,28 @@ there is not warping happening here, just the directions on how to project the r
 
 ## gdal_translate
 
+Create the MBTiles at zoom level 20 `ZOOM_LEVEL_STRATEGY=LOWER` with cubic resampling.
+
 <pre>
-  <code>
+  <code class="nginx">
     gdal_translate -of MBTILES ^
     --config GDAL_NUM_THREADS ALL_CPUS ^
     -co ZOOM_LEVEL_STRATEGY=LOWER ^
     -co RESAMPLING=CUBIC ^
-    -co TILE_FORMAT=PNG ^
     web.vrt tiles.mbtiles
   </code>
 </pre>
 
+---
+
+## gdaladdo
+
+Create overview tiles until the smallest tile that covers the image is 256x256.
+
 <pre>
   <code class="nginx">
-    gdaladdo tiles.mbtiles -r cubic
+    gdaladdo tiles.mbtiles -r average
+    # nearest,average,bilinear,cubic,cubicspline,lanczos...
 
 </code>
 </pre>
@@ -586,9 +608,9 @@ Use the latest gdal2tiles.py python script downloaded from the gdal GitHub site 
 
 ## Hosting & Serving
 
-Copying millions of small files can take a very long time, however deployment is as simple as pointing a web server to a folder.
+> Copying millions of small files can take a very long time, however deployment is as simple as pointing a web server to a folder.
 
-#### *Advantages of MBTiles*
+#### **Advantages of MBTiles**
 
 * One file vs millions of files
 * Complete control of the tile server
@@ -609,19 +631,15 @@ Copying millions of small files can take a very long time, however deployment is
 - https://blog.mastermaps.com/2008/03/generating-map-tiles-with-gdal2tiles.html
 - http://build-failed.blogspot.com/2012/11/zoomable-image-with-leaflet.html
 - https://alastaira.wordpress.com/2011/07/11/maptiler-gdal2tiles-and-raster-resampling/
-- https://wiki.openstreetmap.org/wiki/TMS
 - https://pvanb.wordpress.com/2017/03/06/raster2mbtiles/
 - https://github.com/ecometrica/gdal2mbtiles
 - http://emapr.ceoas.oregonstate.edu/pages/education/how_to/how_to_tws.html
-- https://developers.google.com/kml/articles/raster
 - http://www.perrygeo.com/lazy-raster-processing-with-gdal-vrts.html
 - https://jeromegagnonvoyer.wordpress.com/2015/08/06/merging-multiple-mbtiles-together/
 
 ---
 # Thanks!
 
-*Malcolm Meyer*
+### *Malcolm Meyer*
 
-Twitter and the Web **@getBounds**
-
----
+**@getBounds** on twitter and the web
