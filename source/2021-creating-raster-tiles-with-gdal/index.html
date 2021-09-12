@@ -444,6 +444,11 @@ Create the mosaic in the native projection, adding in our own alpha band.
 _note:
 If you are using NAD83 not 2011, so 3754 or 3753 you may run into projection and transformation issues. See me later for ideas.
 
+"...the horizontal discrepancy between the NAD 83 (CORS93) and NAD 83
+(HARN) positions for a control point is almost always less than 10 cm, and the horizontal
+discrepancy between any two NAD 83 (CORSxx) positions for a control point is almost
+always less than 2 cm." ~ https://www.fs.fed.us/GRAIP/downloads/GPS/Understanding%20the%20Evolution%20of%20WGS%201984%20and%20NAD%201983%20(Rev2).pdf
+
 ---
 
 ## Create the Cloud Optimized GeoTIFF
@@ -588,6 +593,7 @@ Create overview tiles until the smallest tile that covers the image is 256x256.
   <code class="nginx">
     gdaladdo tiles.mbtiles -r average
     # nearest,average,bilinear,cubic,cubicspline,lanczos...
+    # average is marginally faster
 
 </code>
 </pre>
