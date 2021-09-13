@@ -231,6 +231,16 @@ Each zoom level is a directory, each column is a subdirectory, and each tile is 
 
 ---
 
+## MBTiles
+
+> An sqlite database consisting of a `metadata` table and a `tiles` table stored in TMS format.
+<p></p>
+|zoom_level|tile_column|tile_row|tile_data|
+|-|-|-|-|
+|zoom level|x coord|y coord|image as blob|
+|15|8858|20330|blob|
+---
+
 #### Carta do Mundo de Mercator (1569)
 
 [![alt=Carta do Mundo de Mercator 1569](img/1024px-Mercator_1569.png)]((https://en.wikipedia.org/wiki/Mercator_1569_world_map#/media/File:Mercator_1569.png))
@@ -419,9 +429,11 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 
 ## Virtual rasters
 
-`.vrt` is a supported Raster format type for ArcMap, ArcGIS Pro and QGIS.
+Supported in ArcMap, ArcGIS Pro and QGIS.
 
-See https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm
+> [.vrt] is a file format created by the Geospatial Data Abstraction Library (GDAL). It allows a virtual dataset to be derived from other datasets that GDAL can read.
+
+[ArcGIS Pro Supported Raster Formats](https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm)
 
 ---
 
@@ -431,7 +443,7 @@ Create the mosaic in the native projection, adding in our own alpha band.
 
 <pre>
   <code class="">
-    gdalbuildvrt -b 1 -b 2 -b 3 -addalpha mosaic.vrt OSIP/*.tif
+  gdalbuildvrt -b 1 -b 2 -b 3 -addalpha mosaic.vrt OSIP/*.tif
   </code>
 </pre>
 
@@ -460,7 +472,7 @@ CHECK THE RESAMPLING HERE
     gdal_translate mosaic.vrt cog.tif ^
     -a_srs EPSG:6551 ^
     -of COG ^
-    -co RESAMPLING=CUBIC -co COMPRESS=JPEG -co BIGTIFF=YES -co QUALITY=70 -co NUM_THREADS=ALL_CPUS
+    -co RESAMPLING=CUBIC -co COMPRESS=JPEG -co BIGTIFF=YES -co NUM_THREADS=ALL_CPUS
   </code>
 </pre>
 
@@ -476,6 +488,11 @@ The COG format is purpose built for use over low bandwidth connections, so it is
 (HARN) positions for a control point is almost always less than 10 cm, and the horizontal
 discrepancy between any two NAD 83 (CORSxx) positions for a control point is almost
 always less than 2 cm." ~ https://www.fs.fed.us/GRAIP/downloads/GPS/Understanding%20the%20Evolution%20of%20WGS%201984%20and%20NAD%201983%20(Rev2).pdf
+
+gdal_translate mosaic.vrt cog.tif \
+-a_srs EPSG:6551 \
+-of COG \
+-co RESAMPLING=CUBIC -co COMPRESS=JPEG -co BIGTIFF=YES -co NUM_THREADS=ALL_CPUS
 
 ---
 
@@ -543,7 +560,7 @@ Replacement for the default NAD83 datum transformation definition in GDAL.
 
 <pre>
   <code>
-    gdalwarp cog.tif web.vrt ^
+    gdalwarp mosaic.vrt web.vrt ^
     -t_srs EPSG:3857 ^
     -s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" ^
     -dstalpha ^
@@ -559,6 +576,16 @@ Replacement for the default NAD83 datum transformation definition in GDAL.
 
 _note: 
 there is not warping happening here, just the directions on how to project the raster
+
+gdalwarp mosaic.vrt web.vrt \
+-t_srs EPSG:3857 \
+-s_srs "+proj=lcc +lat_0=38 +lon_0=-82.5 +lat_1=40.0333333333333 +lat_2=38.7333333333333 +x_0=600000 +y_0=0 +ellps=GRS80 +towgs84=-0.9956,1.9013,0.5215,0.025915,0.009246,0.011599,-0.00062 +units=us-ft +no_defs" \
+-dstalpha \
+-et 0 \
+-r lanczos \
+-of VRT \
+-overwrite
+
 ---
 
 ## Create the Raster Tiles
@@ -583,6 +610,13 @@ Create the MBTiles at zoom level 20 `ZOOM_LEVEL_STRATEGY=LOWER` with cubic resam
   </code>
 </pre>
 
+_note: 
+gdal_translate -of MBTILES \
+--config GDAL_NUM_THREADS ALL_CPUS \
+-co ZOOM_LEVEL_STRATEGY=LOWER \
+-co RESAMPLING=CUBIC \
+web.vrt tiles.mbtiles
+
 ---
 
 ## gdaladdo
@@ -599,6 +633,9 @@ Create overview tiles until the smallest tile that covers the image is 256x256.
 </pre>
 
 ---
+[Hosted Tiles](https://lancastergis.maps.arcgis.com/home/webmap/viewer.html?webmap=dc58691692d14134a2e1a5667f010fca)
+---
+
 ## gdal2tiles
 
 <pre>
