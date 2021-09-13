@@ -165,7 +165,7 @@ I am going to show three screenshots taken from three map imagery providers, all
 
 ---
 
-## Why **DIY** Image Processing
+## Why **FOSS** Image Processing
 
 - No license needed and runs on any machine
 - Full control of the mosaic to tile pipeline
@@ -203,15 +203,26 @@ in some instances the Esri solutions were faster to run, in others the open sour
 
 ## Imagery Pipeline
 
-  - 1 **Raw TIFF**
+  - 1 **Raw TIFF** `.tif`
     - Available from OSIP
-  - 2 **Mosaic**
+  - 2 **Mosaic** `.vrt`
     - Intermediate File
-  - 3 *Cloud Optimized GeoTIFF*
+  - 3 *Cloud Optimized GeoTIFF* `.tif`
     - Used in Desktop GIS
-  - 4 *Raster Tiles*
+  - 4 *Raster Tiles* `.mbtiles`
     - Used in Web Maps
   - 5 *Tile Server*
+
+---
+
+## Virtual rasters
+
+Supported in ArcMap, ArcGIS Pro and QGIS.
+
+> [.vrt] is a file format created by the Geospatial Data Abstraction Library (GDAL). It allows a virtual dataset to be derived from other datasets that GDAL can read.
+
+[ArcGIS Pro Supported Raster Formats](https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm)
+
 
 ---
 
@@ -234,7 +245,9 @@ Each zoom level is a directory, each column is a subdirectory, and each tile is 
 ## MBTiles
 
 > An sqlite database consisting of a `metadata` table and a `tiles` table stored in TMS format.
+
 <p></p>
+
 |zoom_level|tile_column|tile_row|tile_data|
 |-|-|-|-|
 |zoom level|x coord|y coord|image as blob|
@@ -285,9 +298,9 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 
 ## Raster Tiling Tools
 
-- gdal2tiles
-- QGIS Generate xyz tiles (mbtiles)
-- gdal_translate (mbtiles)
+- gdal2tiles.py
+- QGIS Generate xyz tiles (files or mbtiles)
+- *gdal_translate (mbtiles)*
 
 ---
 
@@ -310,8 +323,8 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 |-|-:|-|-:|
 |Raw Tiff|39,985|TIFF|1150 GB|
 |Esri Export|4|TIFF/LERC|620 GB|
-|gdal_translate COG|2|TIFF/JPG|*82 GB*|
-|ArcGIS Cache|1,316|PNG,JPG|101 GB|
+|gdal_translate COG|1|TIFF/JPG|**82 GB**|
+|ArcGIS Cache|1,316|PNG,JPG|*101 GB*|
 |Raster Tiles|11,511,665|PNG|851 GB|
 |Raster Tiles|11,511,665|JPG|120 GB|
 |MBTiles z20|1|PNG|200 GB|
@@ -427,16 +440,6 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 
 ---
 
-## Virtual rasters
-
-Supported in ArcMap, ArcGIS Pro and QGIS.
-
-> [.vrt] is a file format created by the Geospatial Data Abstraction Library (GDAL). It allows a virtual dataset to be derived from other datasets that GDAL can read.
-
-[ArcGIS Pro Supported Raster Formats](https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm)
-
----
-
 ## Create the Mosaic
 
 Create the mosaic in the native projection, adding in our own alpha band.
@@ -464,8 +467,6 @@ always less than 2 cm." ~ https://www.fs.fed.us/GRAIP/downloads/GPS/Understandin
 ---
 
 ## Create the Cloud Optimized GeoTIFF
-
-CHECK THE RESAMPLING HERE
 
 <pre>
   <code class="">
@@ -575,7 +576,7 @@ Replacement for the default NAD83 datum transformation definition in GDAL.
 `-et`: error threshold
 
 _note: 
-there is not warping happening here, just the directions on how to project the raster
+there is no warping happening here, just the directions on how to project the raster
 
 gdalwarp mosaic.vrt web.vrt \
 -t_srs EPSG:3857 \
@@ -591,14 +592,14 @@ gdalwarp mosaic.vrt web.vrt \
 ## Create the Raster Tiles
 
 - gdal2tiles.py
-- QGIS Generate XYZ Tiles (mbiles)
-- gdal_translate or gdalwarp
+- QGIS Generate XYZ Tiles (mbtiles)
+- *gdal_translate*
 
 ---
 
 ## gdal_translate
 
-Create the MBTiles at zoom level 20 `ZOOM_LEVEL_STRATEGY=LOWER` with cubic resampling.
+> Create the MBTiles at zoom level 20 `ZOOM_LEVEL_STRATEGY=LOWER` with cubic resampling.
 
 <pre>
   <code class="nginx">
@@ -621,7 +622,7 @@ web.vrt tiles.mbtiles
 
 ## gdaladdo
 
-Create overview tiles until the smallest tile that covers the image is 256x256.
+> Create overview tiles until the smallest tile that covers the image is 256x256.
 
 <pre>
   <code class="nginx">
@@ -640,7 +641,7 @@ Create overview tiles until the smallest tile that covers the image is 256x256.
 
 <pre>
   <code>
-    python.exe gdal2tiles.py -xyz -v sourceFile.tif outputFolder
+  python.exe gdal2tiles.py -xyz -v source.tif outputFolder
   </code>
 </pre>
 
