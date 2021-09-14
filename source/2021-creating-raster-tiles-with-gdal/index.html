@@ -119,6 +119,14 @@ My inital exposure to open source came from two places, the Agricutlure and the 
 
 ---
 
+## What is Wisdom
+
+> [The goal is] not to develop full confidence in everything you do, but to become confident in the fact that you probably don’t know what you’re doing.
+
+[~ Mark Manson, 2021](https://markmanson.net/newsletters/mindfck-monthly-92)
+
+---
+
 ## *High Resolution Orthoimagery is one of the foundations of a Modern GIS.*
 
 _note:
@@ -400,7 +408,7 @@ In 1569, Mercator published his epic world map. This map, with its Mercator proj
 ```JavaScript
   Explore raster metadata with gdalinfo.
   Verify the accuracy of the data in QGIS with NGS ground control points.
-  Create a Mosaic with gdalbuildvrt (force NAD83 SP South).
+  Create a Mosaic with gdalbuildvrt (force NAD83 2011 SP South).
   Create the COG with gdal_translate.
   Examine the output in QGIS.
   Create another VRT in WebMercator.
@@ -660,12 +668,13 @@ Use the latest gdal2tiles.py python script downloaded from the gdal GitHub site 
 * Complete control of the tile server
 
 ---
-### Tile Servers
+### MBTile Servers
 
 - [mbtileserver](https://github.com/consbio/mbtileserver)
  - Written in GO, deployed via a windows exe file
 - [wmts-server](https://github.com/reyemtm/wmts-server)
  - NodeJS server with WMTS endoints and 3x overzoom
+- Many others...
 
 ---
 
