@@ -1,0 +1,1 @@
+Create gdal cogs write up as an addition to the slides.
